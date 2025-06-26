@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "SciPy 2025: Shiny for Python",
+    "section": "",
+    "text": "Shiny is a framework for building web applications and data dashboards in Python. In this workshop, you will see how the basic building blocks of shiny can be extended to create your own scalable production-ready python applications."
+  },
+  {
+    "objectID": "index.html#schedule",
+    "href": "index.html#schedule",
+    "title": "SciPy 2025: Shiny for Python",
+    "section": "Schedule",
+    "text": "Schedule\n\n\n\n\nTime\nActivity\n\n\n\n\n13:30\nWelcome!\n\n\n13:–\nBasic building blocks of a Shiny application\n\n\n13:–\nInput components\n\n\n13:–\nOutput components\n\n\n14:20\nbreak\n\n\n14:30\nA more complex application\n\n\n14:–\nShiny’s reactivity programming model\n\n\n15:–\nDeploying your application to the web (for free!)\n\n\n15:20\nbreak\n\n\n15:–\nAnatomy of a conversation\n\n\n15:–\nDemo: 20 Questions\n\n\n15:–\nYour first chat with an LLM\n\n\n15:–\nAI Chat Interfaces\n\n\n15:–\nTool Calling\n\n\n16:20\nbreak\n\n\n16:30\nShiny modules\n\n\n16:–\nTesting your shiny apps with playwright\n\n\n17:00\nQ+A with the Shiny engineers\n\n\n17:30\nEnd"
+  },
+  {
+    "objectID": "index.html#faq",
+    "href": "index.html#faq",
+    "title": "SciPy 2025: Shiny for Python",
+    "section": "FAQ",
+    "text": "FAQ\n\nWhat if I’m a complete beginner?\nYou should have a basic understanding of Python and be able to install packages with pip, do basic data manipulation, and draw plots.\n\n\nWhat if I’ve never built a Shiny app before?\nThis workshops doesn’t require any Shiny or web application experience. We’ll focus more on practical examples in the course. We do have additional resources for you to dive more into more Shiny details, but we will cover the basics needed to build larger and scalable applications.\n\n\nWhy should I learn Shiny if I already know Streamlit or Dash?\nWe believe that Shiny is the best framework for building data applications in Python. It’s reactive execution model means that you can build performant applications without explicitly caching data or managing application state. See this blog post for more on why we think that Shiny is worth learning.\n\n\nI already know Shiny for R, is this workshop for me?\nThe R and Python Shiny packages are quite similar, so some of the content in this workshop may be familiar to you. That said it’s a great opportunity to fill in missing pieces and ask question about Python best practices. We will also talk about Shiny modules and testing in this workshop, which will also be a precursor for you to learn more or incorporate Python Packaging to your Shiny applications."
+  },
+  {
+    "objectID": "setup.html",
+    "href": "setup.html",
+    "title": "Setup",
+    "section": "",
+    "text": "Pick one of the following ways to set up your Python environment.\nHere is the requirements.txt you will need to set up the environment.\naltair\nanthropic\nanthropic[bedrock]\nboto3\nchatlas\nfaicons\nipykernel\nlangchain\nlangchain-anthropic\nlangchain-openai\nlanggraph\nopenai\npalmerpenguins\npandas\npillow\nplaywright\nplotly\nplotnine\npython-dotenv\nquerychat @ git+https://github.com/posit-dev/querychat\nrequests\nridgeplot\nseaborn\nshiny\nshinychat\nshinywidgets\ntokenizers\n\n\nconda create -n shiny python=3.12\nconda activate shiny\npip install -r requirements.txt\n\n\n\npython -m venv venv\nsource venv/bin/activate && pip install -r requirements.txt\n\n\n\nuv venv venv\nsource venv/bin/activate && uv pip install -r requirements.txt"
+  },
+  {
+    "objectID": "setup.html#python",
+    "href": "setup.html#python",
+    "title": "Setup",
+    "section": "",
+    "text": "Pick one of the following ways to set up your Python environment.\nHere is the requirements.txt you will need to set up the environment.\naltair\nanthropic\nanthropic[bedrock]\nboto3\nchatlas\nfaicons\nipykernel\nlangchain\nlangchain-anthropic\nlangchain-openai\nlanggraph\nopenai\npalmerpenguins\npandas\npillow\nplaywright\nplotly\nplotnine\npython-dotenv\nquerychat @ git+https://github.com/posit-dev/querychat\nrequests\nridgeplot\nseaborn\nshiny\nshinychat\nshinywidgets\ntokenizers\n\n\nconda create -n shiny python=3.12\nconda activate shiny\npip install -r requirements.txt\n\n\n\npython -m venv venv\nsource venv/bin/activate && pip install -r requirements.txt\n\n\n\nuv venv venv\nsource venv/bin/activate && uv pip install -r requirements.txt"
+  },
+  {
+    "objectID": "setup.html#ide",
+    "href": "setup.html#ide",
+    "title": "Setup",
+    "section": "IDE",
+    "text": "IDE\nI’m using Positron: https://positron.posit.co/, but feel free to use VS Code. We will not be working with Jupyter Notebooks in this workshop.\nYou will need the Shiny - VS Code Extension"
+  },
+  {
+    "objectID": "setup.html#chat-model",
+    "href": "setup.html#chat-model",
+    "title": "Setup",
+    "section": "Chat Model",
+    "text": "Chat Model\n\nGitHub Models\nYou will need to create a GitHub Personal Access Token (PAT). It does not need any context (e.g., repo, workflow, etc).\nGeneral instructions from the GitHub docs on creating a PAT: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic\nInstructions from the GitHub Models docs: https://github.com/Azure-Samples/python-ai-agent-frameworks-demos/tree/main?tab=readme-ov-file#configuring-github-models\n\n\n(optional) Local LLM: Ollama\n\nDownload Ollama: https://ollama.com/\nPick one of the many llama models on their model page from: https://ollama.com/search.\n\nPick any random model that will fit on your computer\nYou can pick multiple models if you’d like, we will compare results during workshop.\nHere are a few example models with their download sizes you can try:\n\n\n\n\n\nModel\nDownload Size\nURL\nInstall Command\n\n\n\n\nqwen3:0.6b\n523MB\nhttps://ollama.com/library/qwen3\nollama run qwen3:0.6b\n\n\nqwen\n5.2GB\n-\nollama run qwen3\n\n\nPhi 4 mini\n3.2GB\nhttps://ollama.com/library/phi4-reasoning\nollama run phi4-mini-reasoning\n\n\ndevstral\n14GB\nhttps://ollama.com/library/devstral\nollama run devstral\n\n\nllama4\n67GB\nhttps://ollama.com/library/llama4\nollama run llama4\n\n\nllama4:128x17b\n245GB\n-\nollama run llama4:128x17b\n\n\n\n\n\n(Optional): Chat provider with API (paid)\nIf you pay for Claude, OpenAI, etc access with their web/desktop application, this is a separate purchase for the API key. Depending on your usage, you may even find that paying for the API key could be cheaper!\n\nAnthropic Claude\n\nSign up at https://console.anthropic.com.\nLoad up enough credit so you won’t be sad if something goes wrong.\nCreate a key at https://console.anthropic.com/settings/keys\n\n\n\nGoogle Gemini\n\nLog in to https://aistudio.google.com with a google account\nClick create API key & copy it to the clipboard.\n\n\n\nOpenAI ChatGPT\n\nSign up at https://openai.com/\nCreate a key at https://platform.openai.com/api-keys"
+  },
+  {
+    "objectID": "setup.html#check-your-installation",
+    "href": "setup.html#check-your-installation",
+    "title": "Setup",
+    "section": "Check your installation",
+    "text": "Check your installation\n\nClone / download this repository: &lt;&gt;\nActivate the Python environment with the packages you just installed\nRun the test-install.py app and script with: shiny run test-install.py\n\nYou should see output like this\n$ shiny run test-install.py\nINFO:     Started server process [46615]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)"
+  }
+]
