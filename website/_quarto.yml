@@ -1,0 +1,51 @@
+project:
+  type: website
+  preview:
+    port: 9708
+    watch-inputs: true
+  render:
+    - "./*.qmd"
+    - "slides/*.qmd"
+  resources:
+    - slides
+
+website:
+  title: "Intro to Shiny"
+  navbar:
+    left:
+      - href: workshop.qmd
+      - href: setup.qmd
+
+    right:
+      - icon: github
+        href: https://github.com/chendaniely/scipy-2025-shiny
+
+  page-footer: |
+    <a href="https://github.com/chendaniely/scipy-2025-shiny">chendaniely/scipy-2025-shiny</a>
+
+  repo-url: https://github.com/chendaniely/scipy-2025-shiny
+  repo-subdir: website
+  repo-actions: [edit, issue]
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+    toc-expand: 2
+
+
+editor:
+  render-on-save: true
+
+
+brand: _brand.yml
+
+filters:
+  - shinylive
+  - quarto
+  - line-highlight
+  - countdown
+  - embedio

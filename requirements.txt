@@ -1,0 +1,27 @@
+altair
+anthropic
+anthropic[bedrock]
+boto3
+chatlas
+faicons
+ipykernel
+langchain
+langchain-anthropic
+langchain-openai
+langgraph
+openai
+palmerpenguins
+pandas
+pillow
+playwright
+plotly
+plotnine
+python-dotenv
+querychat @ git+https://github.com/posit-dev/querychat
+requests
+ridgeplot
+seaborn
+shiny
+shinychat
+shinywidgets
+tokenizers

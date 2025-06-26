@@ -1,0 +1,69 @@
+---
+title: "SciPy 2025: Shiny for Python"
+toc: false
+---
+
+Shiny is a framework for building web applications and data dashboards in Python.
+In this workshop,
+you will see how the basic building blocks of shiny can be extended to create
+your own scalable production-ready python applications.
+
+## Schedule
+
+:::{.column-body}
+| Time  | Activity                                              |
+| :---- | :---------------------------------------------------- |
+| 13:30 | [Welcome!]()                                          |
+| 13:-- | [Basic building blocks of a Shiny application]()      |
+| 13:-- | [Input components]()                                  |
+| 13:-- | [Output components]()                                 |
+| 14:20 | *break*                                               |
+| 14:30 | [A more complex application]()                        |
+| 14:-- | [Shiny's reactivity programming model]()              |
+| 15:-- | [Deploying your application to the web (for free!)]() |
+| 15:20 | *break*                                               |
+| 15:-- | [Anatomy of a conversation]()                         |
+| 15:-- | [Demo: 20 Questions][demo20q]                         |
+| 15:-- | [Your first chat with an LLM]()                       |
+| 15:-- | [AI Chat Interfaces]()                                |
+| 15:-- | [Tool Calling]()                                      |
+| 16:20 | *break*                                               |
+| 16:30 | [Shiny modules]()                                     |
+| 16:-- | [Testing your shiny apps with playwright]()           |
+| 17:00 | Q+A with the Shiny engineers                          |
+| 17:30 | End                                                   |
+:::
+
+## FAQ
+
+#### What if I'm a complete beginner?
+
+You should have a basic understanding of Python and be able to install packages with pip, do basic data manipulation, and draw plots.
+
+#### What if I've never built a Shiny app before?
+
+This workshops doesn’t require any Shiny or web application experience.
+We'll focus more on practical examples in the course.
+We do have additional resources for you to dive more into more Shiny details,
+but we will cover the basics needed to build larger and scalable applications.
+
+#### Why should I learn Shiny if I already know Streamlit or Dash?
+
+We believe that Shiny is the best framework for building data applications in Python.
+It’s reactive execution model means that you can build performant applications without
+explicitly caching data or managing application state.
+See
+this blog post
+for more on why we think that Shiny is worth learning.
+
+#### I already know Shiny for R, is this workshop for me?
+
+The R and Python Shiny packages are quite similar,
+so some of the content in this workshop may be familiar to you.
+That said it’s a great opportunity to fill in missing pieces and ask question about Python best practices.
+We will also talk about Shiny modules and testing in this workshop,
+which will also be a precursor for you to learn more or incorporate Python Packaging
+to your Shiny applications.
+
+
+[demo20q]: https://github.com/chendaniely/2025-06-05-llm/blob/main/demo/20-questions/app.R
