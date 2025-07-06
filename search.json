@@ -53,6 +53,6 @@
     "href": "setup.html#check-your-installation",
     "title": "Setup",
     "section": "Check your installation",
-    "text": "Check your installation\n\nClone / download this repository: &lt;&gt;\nActivate the Python environment with the packages you just installed\nRun the test-install.py app and script with: shiny run test-install.py\n\nYou should see output like this\n$ shiny run test-install.py\nINFO:     Started server process [46615]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)"
+    "text": "Check your installation\n\nClone / download this repository: https://github.com/chendaniely/scipy-2025-shiny\nActivate the Python environment with the packages you just installed\nRun the test-install.py app and script with: shiny run test-install.py\n\nYou should see output like this\n$ shiny run test-install.py\nINFO:     Started server process [46615]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)"
   }
 ]
