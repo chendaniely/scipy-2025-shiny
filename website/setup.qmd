@@ -93,7 +93,7 @@ Depending on your usage, you may even find that paying for the API key could be 
 
 ## Check your installation
 
-1. Clone / download this repository: <>
+1. Clone / download this repository: <https://github.com/chendaniely/scipy-2025-shiny>
 2. Activate the Python environment with the packages you just installed
 3. Run the test-install.py app and script with: `shiny run test-install.py`
 
