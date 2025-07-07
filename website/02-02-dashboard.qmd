@@ -1,0 +1,9 @@
+---
+title: "Dashboard"
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/02-app/02-dashboard.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::

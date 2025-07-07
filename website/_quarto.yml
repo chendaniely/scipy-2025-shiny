@@ -40,6 +40,8 @@ website:
         - section: "Building a Shiny Application"
           contents:
             - href: 02-01-reactivity.qmd
+            - href: 02-02-dashboard.qmd
+
 format:
   html:
     theme:
