@@ -41,6 +41,16 @@ website:
           contents:
             - href: 02-01-reactivity.qmd
             - href: 02-02-dashboard.qmd
+        - section: "Working with LLMs"
+          contents:
+            - href: 03-01-welcome.qmd
+            - href: 03-02-anatomy.qmd
+            - href: 03-03-first.qmd
+            - href: 03-04-chatbot.qmd
+        - section: "Modules and Testing"
+          contents:
+            - href: 04-01-modules.qmd
+            - href: 04-02-testing.qmd
 
 format:
   html:

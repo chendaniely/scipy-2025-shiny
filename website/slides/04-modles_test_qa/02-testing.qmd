@@ -1,0 +1,66 @@
+---
+title: Testing
+
+format:
+  revealjs:
+    footer: "SciPy 2025. <https://github.com/chendaniely/scipy-2025-shiny>"
+    slide-number: true
+    show-slide-number: all
+    smaller: true
+---
+
+
+## Testing
+
+- Have the computer make the checks you may be doing visually
+- Have the checks done in code
+
+## Testing Shiny
+
+- Testing is always great (nothing new here)
+- Playwright is the more modern way to test web apps
+  - Compared to Selenium...
+- Shiny makes playwright easier to code against
+
+## Pytest Example
+
+```{.python code-line-numbers="15,16"}
+import pandas as pd
+
+idx1 = pd.Index([1, 2, 3, 4, 5])
+idx2 = pd.Index([2, 3, 4, 5, 6])
+idx3 = pd.Index([3, 4, 5, 6, 7])
+default = pd.Index([1, 2, 3, 4, 5, 6, 7])
+
+def test_index_intersection_all():
+    to_intersect = [idx1, idx2, idx3]
+    expected = pd.Index([3, 4, 5])
+    calculated = index_intersection_all(
+        to_intersect,
+        default=default,
+    )
+    assert (calculated == expected).all()
+    assert calculated.equals(expected)
+```
+
+## Playwright Example
+
+```{.python}
+from shiny.playwright import controller
+from shiny.run import ShinyAppProc
+from playwright.sync_api import Page
+from shiny.pytest import create_app_fixture
+
+app = create_app_fixture("app.py")
+
+# TODO: make new example with app
+def test_basic_app(page: Page, app: ShinyAppProc):
+    page.goto(app.url)
+
+    selectize_day = controller.InputSelectize(page, "adaptive-filter_day")
+    selectize_day.set("Fri")
+    selectize_day.expect_selected(["Fri"])
+
+    selectize_time = controller.InputSelectize(page, "adaptive-filter_time")
+    selectize_time.expect_choices(["Dinner"])
+```

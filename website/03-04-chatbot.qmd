@@ -1,0 +1,9 @@
+---
+title: "Chatbot UI"
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/03-llm/04-chatbot.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::

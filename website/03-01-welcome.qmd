@@ -1,0 +1,9 @@
+---
+title: "Welcome to LLMs"
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/03-llm/01-welcome.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::

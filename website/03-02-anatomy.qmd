@@ -1,0 +1,9 @@
+---
+title: "Anatomy of a chat"
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/03-llm/02-anatomy.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::

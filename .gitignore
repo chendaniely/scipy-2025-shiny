@@ -4,6 +4,7 @@ _site
 .quarto
 .DS_Store
 temp
+*.quarto_ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

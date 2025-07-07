@@ -1,0 +1,47 @@
+---
+title: "Introduction to LLMs"
+format:
+  revealjs:
+    footer: "SciPy 2025. Slides: https://github.com/chendaniely/scipy-2025-shiny"
+    slide-number: true
+    show-slide-number: all
+    smaller: true
+
+editor:
+  render-on-save: true
+---
+
+## Passing along what I learned {footer=false}
+
+![](/img/youtube-joe-llm.png)
+
+Joe will do a better job than I can, but I can demo you code today.
+
+<https://www.youtube.com/watch?v=owDd1CJ17uQ>
+
+## Poll: Experience with LLMs
+
+:::{.incremental}
+
+1. Used an LLM before (ChatGPT/Claude/Ollama desktop/web application)?
+
+2. Skeptical about LLMs/AI (1-2 out of 5)? Why?
+3. Neutral about LLMs/AI (3 out of 5)? Why?
+4. Enthusiastic about LLMs/AI (4-5 out of 5)? Why?
+
+:::
+
+## Today
+
+- Today, we will treat LLMs as black boxes
+- Practical introduction
+- Get some hands on practice to demystify using them
+
+## Goal
+
+Quick Start on LLMs. You will leave having used a Chat API in a shiny app.
+
+## Security
+
+- **DO NOT** send proprietary code or data to any LLM, unless you are sure IT policies allow it
+- Local models (e.g., Ollama) typically perform worse than frontier models

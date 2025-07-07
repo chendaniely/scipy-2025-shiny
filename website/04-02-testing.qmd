@@ -1,0 +1,9 @@
+---
+title: "Testing"
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/04-modules_test_qa/02-testing.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::

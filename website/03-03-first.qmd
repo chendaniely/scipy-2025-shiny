@@ -1,0 +1,9 @@
+---
+title: "Your first chat"
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/03-llm/03-first.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::
