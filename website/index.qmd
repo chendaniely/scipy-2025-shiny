@@ -18,17 +18,16 @@ your own scalable production-ready python applications.
 | 13:50 | [Your first application](01-03-first-app.qmd)                |
 | 14:20 | *break*                                                      |
 | 14:30 | [Shiny's reactivity programming model](02-01-reactivity.qmd) |
-| 14:45 | [A more complex application]()                               |
+| 14:45 | [A more complex application](02-02-dashboard.qmd)            |
 | 15:10 | [Deploying your application to the web (for free!)]()        |
 | 15:20 | *break*                                                      |
-| 15:-- | [Anatomy of a conversation]()                                |
-| 15:-- | [Demo: 20 Questions][demo20q]                                |
-| 15:-- | [Your first chat with an LLM]()                              |
-| 15:-- | [AI Chat Interfaces]()                                       |
-| 15:-- | [Tool Calling]()                                             |
+| 15:30 | [Anatomy of a conversation](03-02-anatomy.qmd)               |
+| 15:45 | [Demo: 20 Questions][demo20q]                                |
+| 15:55 | [Your first chat with an LLM](03-03-first.qmd)               |
+| 16:05 | [AI Chat Interfaces](03-04-chatbot.qmd)                      |
 | 16:20 | *break*                                                      |
-| 16:30 | [Shiny modules]()                                            |
-| 16:-- | [Testing your shiny apps with playwright]()                  |
+| 16:30 | [Shiny modules](04-01-modules.qmd)                           |
+| 16:55 | [Testing your shiny apps with playwright](04-02-testing.qmd) |
 | 17:00 | Q+A with the Shiny engineers                                 |
 | 17:30 | End                                                          |
 :::
