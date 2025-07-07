@@ -13,10 +13,9 @@ your own scalable production-ready python applications.
 :::{.column-body}
 | Time  | Activity                                              |
 | :---- | :---------------------------------------------------- |
-| 13:30 | [Welcome!]()                                          |
-| 13:-- | [Basic building blocks of a Shiny application]()      |
-| 13:-- | [Input components]()                                  |
-| 13:-- | [Output components]()                                 |
+| 13:30 | [Welcome!](01-01-welcome.qmd)                         |
+| 13:40 | [Introduction to Shiny](01-02-intro-shiny.qmd)        |
+| 13:50 | [Your first application](01-03-first-app.qmd)         |
 | 14:20 | *break*                                               |
 | 14:30 | [A more complex application]()                        |
 | 14:-- | [Shiny's reactivity programming model]()              |
