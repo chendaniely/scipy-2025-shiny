@@ -30,23 +30,23 @@ jobs:
         with:
           tinytex: false
 
-      # - name: Set up Python
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-      # - name: Cache uv packages
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ~/.cache/uv
-      #     key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-      #     restore-keys: |
-      #       uv-${{ runner.os }}-
+      - name: Cache uv packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            uv-${{ runner.os }}-
 
-      # - name: Install uv and dependencies
-      #   run: |
-      #     curl -LsSf https://astral.sh/uv/install.sh | sh
-      #     uv pip install --system -r requirements.txt
+      - name: Install uv and dependencies
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          uv pip install --system -r requirements.txt
 
       - name: Render and Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
