@@ -5,6 +5,7 @@ boto3
 chatlas
 faicons
 ipykernel
+jupyter
 langchain
 langchain-anthropic
 langchain-openai
@@ -23,5 +24,6 @@ ridgeplot
 seaborn
 shiny
 shinychat
+shinylive
 shinywidgets
 tokenizers

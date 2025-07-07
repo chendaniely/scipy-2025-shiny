@@ -5,7 +5,7 @@ project:
     watch-inputs: true
   render:
     - "./*.qmd"
-    - "slides/*.qmd"
+    - "slides/*/*.qmd"
   resources:
     - slides
 
@@ -13,7 +13,6 @@ website:
   title: "Intro to Shiny"
   navbar:
     left:
-      - href: workshop.qmd
       - href: setup.qmd
 
     right:
@@ -27,6 +26,17 @@ website:
   repo-subdir: website
   repo-actions: [edit, issue]
 
+  sidebar:
+    - style: docked
+      type: light
+      background: light
+      foreground: dark
+      contents:
+        - section: "Introduction"
+          contents:
+            - href: 01-01-welcome.qmd
+            - href: 01-02-intro-shiny.qmd
+            - href: 01-03-first-app.qmd
 format:
   html:
     theme:
@@ -36,6 +46,7 @@ format:
     toc: true
     toc-expand: 2
 
+jupyter: python3
 
 editor:
   render-on-save: true

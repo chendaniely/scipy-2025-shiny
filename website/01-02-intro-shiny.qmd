@@ -1,0 +1,9 @@
+---
+title: Shiny introduction
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/01-intro/02-intro-shiny.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::

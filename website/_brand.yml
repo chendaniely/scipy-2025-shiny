@@ -42,13 +42,13 @@ typography:
 logo:
   images:
     icon:
-      path: img/posit-logo.svg
+      path: /img/posit-logo.svg
       alt: Posit icon.
     full:
-      path: img/posit-logo-fullcolor.svg
+      path: /img/posit-logo-fullcolor.svg
       alt: Posit logo.
     full-reverse:
-      path: img/posit-logo-reverse.svg
+      path: /img/posit-logo-reverse.svg
       alt: Posit logo.
   small: icon
   medium:

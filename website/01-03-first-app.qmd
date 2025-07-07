@@ -1,0 +1,9 @@
+---
+title: Your first application
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/01-intro/03-first-app.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::

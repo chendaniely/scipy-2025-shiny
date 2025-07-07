@@ -1,6 +1,6 @@
 .PHONY: preview
 preview:
-	quarto preview
+	cd website && quarto preview
 
 .PHONY: setup-py
 setup-py:
