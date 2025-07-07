@@ -1,0 +1,41 @@
+---
+title: "Welcome"
+format:
+  revealjs:
+    footer: "SciPy 2025. <https://github.com/chendaniely/scipy-2025-shiny>"
+    slide-number: true
+    show-slide-number: all
+    smaller: true
+---
+
+## Get your computer ready
+
+If you haven't done so, please have your computer set up for this workshop:
+
+<https://chendaniely.github.io/scipy-2025-shiny/setup.html>
+
+![](/img/qr-setup.png){width="500px" fig-align="center"}
+
+## Today's goal
+
+Learn how to build reactive web apps with Shiny for Python,
+from the simple to the mission critical.
+
+## Who you are {.incremental}
+
+::: {.incremental}
+- Have you used:
+  - Python?
+  - Dashboard?
+  - HTML, CSS, JavaScript?
+  - Shiny (for R or Python)?
+:::
+
+## Goals for this section {.incremental}
+
+1.  Understand the "whole game"/ big picture
+2.  Identify the resources that will support you
+3.  Develop comfort with debugging
+4.  GenAI + LLMs in your dashboards and applications
+5.  Modules and Testing
+6.  Q+A with the Shiny Developers

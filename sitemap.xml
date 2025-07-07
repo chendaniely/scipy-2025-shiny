@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://chendaniely.github.io/scipy-2025-shiny/workshop.html</loc>
-    <lastmod>2025-07-06T04:50:20.930Z</lastmod>
+    <loc>https://chendaniely.github.io/scipy-2025-shiny/slides/01-intro/03-first-app.html</loc>
+    <lastmod>2025-07-07T07:10:52.907Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chendaniely.github.io/scipy-2025-shiny/slides/01-intro/01-welcome.html</loc>
+    <lastmod>2025-07-07T07:10:52.907Z</lastmod>
   </url>
   <url>
     <loc>https://chendaniely.github.io/scipy-2025-shiny/index.html</loc>
-    <lastmod>2025-07-06T04:50:20.930Z</lastmod>
+    <lastmod>2025-07-07T07:10:52.906Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chendaniely.github.io/scipy-2025-shiny/01-02-intro-shiny.html</loc>
+    <lastmod>2025-07-07T07:10:52.871Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chendaniely.github.io/scipy-2025-shiny/01-01-welcome.html</loc>
+    <lastmod>2025-07-07T07:10:52.871Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chendaniely.github.io/scipy-2025-shiny/01-03-first-app.html</loc>
+    <lastmod>2025-07-07T07:10:52.871Z</lastmod>
   </url>
   <url>
     <loc>https://chendaniely.github.io/scipy-2025-shiny/setup.html</loc>
-    <lastmod>2025-07-06T04:50:20.930Z</lastmod>
+    <lastmod>2025-07-07T07:10:52.906Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chendaniely.github.io/scipy-2025-shiny/slides/01-intro/02-intro-shiny.html</loc>
+    <lastmod>2025-07-07T07:10:52.907Z</lastmod>
   </url>
 </urlset>

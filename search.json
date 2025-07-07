@@ -1,5 +1,159 @@
 [
   {
+    "objectID": "slides/01-intro/03-first-app.html#plan-out-your-application-data",
+    "href": "slides/01-intro/03-first-app.html#plan-out-your-application-data",
+    "title": "Your first application",
+    "section": "Plan out your application data",
+    "text": "Plan out your application data\n\nStart off with the data you have an some kind of data artifact without the interactivity\nUse a placeholder variable to apply the interactivity manually"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#visualizing-penguin-data",
+    "href": "slides/01-intro/03-first-app.html#visualizing-penguin-data",
+    "title": "Your first application",
+    "section": "Visualizing penguin data",
+    "text": "Visualizing penguin data\n\nfrom palmerpenguins import load_penguins\nfrom plotnine import aes, geom_histogram, ggplot, theme_minimal\n\ndat = load_penguins()\ndat.head()\n\nspecies = \"Adelie\"  # selected species\nsel = dat.loc[dat.species == species] # selected data\n\n(\n    ggplot(aes(x=\"bill_length_mm\"))\n    + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n    + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n    + theme_minimal()\n)"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#visualizing-penguin-data-output",
+    "href": "slides/01-intro/03-first-app.html#visualizing-penguin-data-output",
+    "title": "Your first application",
+    "section": "Visualizing penguin data",
+    "text": "Visualizing penguin data"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#change-the-species",
+    "href": "slides/01-intro/03-first-app.html#change-the-species",
+    "title": "Your first application",
+    "section": "Change the species",
+    "text": "Change the species\n\nfrom palmerpenguins import load_penguins\nfrom plotnine import aes, geom_histogram, ggplot, theme_minimal\n\ndat = load_penguins()\ndat.head()\n\nspecies = \"Gentoo\"  # change species\nsel = dat.loc[dat.species == species]\n\n(\n    ggplot(aes(x=\"bill_length_mm\"))\n    + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n    + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n    + theme_minimal()\n)"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#change-the-species-output",
+    "href": "slides/01-intro/03-first-app.html#change-the-species-output",
+    "title": "Your first application",
+    "section": "Change the species",
+    "text": "Change the species"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#your-turn",
+    "href": "slides/01-intro/03-first-app.html#your-turn",
+    "title": "Your first application",
+    "section": "Your Turn",
+    "text": "Your Turn\n\nCreate the working baseline code:\n\n\n  \n    −\n    +\n \n 02:00\n \n\nfrom palmerpenguins import load_penguins\nfrom plotnine import aes, geom_histogram, ggplot, theme_minimal\n\ndat = load_penguins()\ndat.head()\n\nspecies = \"Gentoo\"  # Adelie, Gentoo, Chinstrap\nsel = dat.loc[dat.species == species]\n\n(\n    ggplot(aes(x=\"bill_length_mm\"))\n    + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n    + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n    + theme_minimal()\n)"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#the-user-interface",
+    "href": "slides/01-intro/03-first-app.html#the-user-interface",
+    "title": "Your first application",
+    "section": "The user interface",
+    "text": "The user interface\n\nBest try to mock up or wireframe a UI before starting\nInput Components Gallery: https://shiny.posit.co/py/components/#inputs\nWhat might be a good component to use?\n\n\n  \n    −\n    +\n \n 01:00"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#radio-buttons",
+    "href": "slides/01-intro/03-first-app.html#radio-buttons",
+    "title": "Your first application",
+    "section": "Radio Buttons",
+    "text": "Radio Buttons\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n# | standalone: true\n# | components: [editor, viewer]\n# | layout: horizontal\nfrom shiny.express import ui\n\nui.input_radio_buttons(\n    id=\"species\",\n    label=\"Species\",\n    choices=[\"Adelie\", \"Gentoo\", \"Chinstrap\"],\n)"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#run-your-application",
+    "href": "slides/01-intro/03-first-app.html#run-your-application",
+    "title": "Your first application",
+    "section": "Run your application",
+    "text": "Run your application\n\nPositron/VS Code + Shiny Extension\n\n\n\nCommand line:\n\nshiny run --reload app.py"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#radio-buttons-options",
+    "href": "slides/01-intro/03-first-app.html#radio-buttons-options",
+    "title": "Your first application",
+    "section": "Radio Buttons: options",
+    "text": "Radio Buttons: options\nhttps://shiny.posit.co/py/api/express/express.ui.input_radio_buttons.html\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n# | standalone: true\n# | components: [editor, viewer]\n# | layout: horizontal\nfrom shiny.express import ui\n\nui.input_radio_buttons(\n    id=\"species\",\n    label=\"Species\",\n    choices=[\"Adelie\", \"Gentoo\", \"Chinstrap\"],\n    inline=True,\n)\n\n  \n    −\n    +\n \n 02:00"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#add-in-the-figure",
+    "href": "slides/01-intro/03-first-app.html#add-in-the-figure",
+    "title": "Your first application",
+    "section": "Add in the figure",
+    "text": "Add in the figure\nNow let’s add all that data and plotting code from earlier into our application.\nIf we just dump in our code, the application errors because it does not know what to do with the figure that’s trying to be printed."
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#output-will-error",
+    "href": "slides/01-intro/03-first-app.html#output-will-error",
+    "title": "Your first application",
+    "section": "Output will error",
+    "text": "Output will error\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n# | standalone: true\n# | components: [editor, viewer]\n# | layout: horizontal\nfrom shiny.express import ui\n\nfrom palmerpenguins import load_penguins\nfrom plotnine import aes, geom_histogram, ggplot, theme_minimal\n\nui.input_radio_buttons(\n    id=\"species\",\n    label=\"Species\",\n    choices=[\"Adelie\", \"Gentoo\", \"Chinstrap\"],\n    inline=True,\n)\n\ndat = load_penguins()\nspecies = \"Adelie\"\nsel = dat.loc[dat.species == species]\n\n# this will cause a TypeError: Invalid tag item type\n(\n    ggplot(aes(x=\"bill_length_mm\"))\n    + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n    + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n    + theme_minimal()\n)"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#outputs",
+    "href": "slides/01-intro/03-first-app.html#outputs",
+    "title": "Your first application",
+    "section": "Outputs",
+    "text": "Outputs\n\nEach output needs to be wrapped in it’s own function with the corresponding output decorator.\n\nhttps://shiny.posit.co/py/components/#outputs\n\nWe now need to use one of the built-in Shiny output components,\nSpecifically, one that can render a plotnine figure (which is based on matplotlib), plot output component.\nFor example, we want to return a plot, so we will need to wrap our plotnine code, and decorate it with the @render.plot decorator."
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#render-plot-output",
+    "href": "slides/01-intro/03-first-app.html#render-plot-output",
+    "title": "Your first application",
+    "section": "Render plot output",
+    "text": "Render plot output\n@render.plot #&lt;&lt;\ndef plot(): #&lt;&lt;\n    return ( #&lt;&lt;\n        ggplot(aes(x=\"bill_length_mm\"))\n        + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n        + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n        + theme_minimal()\n    )\n\n\n\n\n\n\nReturn the output\n\n\nDon’t forget to return the object you want displayed in the function! Otherwise the output will not render."
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#render-plot-output-1",
+    "href": "slides/01-intro/03-first-app.html#render-plot-output-1",
+    "title": "Your first application",
+    "section": "Render plot output",
+    "text": "Render plot output\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n# | standalone: true\n# | components: [editor, viewer]\n# | layout: horizontal\nfrom shiny.express import ui, render\n\nfrom palmerpenguins import load_penguins\nfrom plotnine import aes, geom_histogram, ggplot, theme_minimal\n\nui.input_radio_buttons(\n    id=\"species\",\n    label=\"Species\",\n    choices=[\"Adelie\", \"Gentoo\", \"Chinstrap\"],\n    inline=True,\n)\n\ndat = load_penguins()\nspecies = \"Adelie\"\nsel = dat.loc[dat.species == species]\n\n@render.plot #&lt;&lt;\ndef plot(): #&lt;&lt;\n    return ( #&lt;&lt;\n        ggplot(aes(x=\"bill_length_mm\"))\n        + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n        + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n        + theme_minimal()\n    )"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#reactivity",
+    "href": "slides/01-intro/03-first-app.html#reactivity",
+    "title": "Your first application",
+    "section": "Reactivity",
+    "text": "Reactivity\n\nBut the radio buttons don’t change anything\nWe didn’t connect the input component to the output component\nReactivity is what makes Shiny unique"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#the-data-reacts-to-the-input",
+    "href": "slides/01-intro/03-first-app.html#the-data-reacts-to-the-input",
+    "title": "Your first application",
+    "section": "The data reacts to the input",
+    "text": "The data reacts to the input\ndat = load_penguins()\n\n@render.plot\ndef plot():\n    species = input.species() #&lt;&lt;\n    sel = dat.loc[dat.species == species] #&lt;&lt;\n\n    return (\n        ggplot(aes(x=\"bill_length_mm\"))\n        + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n        + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n        + theme_minimal()\n    )"
+  },
+  {
+    "objectID": "slides/01-intro/03-first-app.html#your-first-application",
+    "href": "slides/01-intro/03-first-app.html#your-first-application",
+    "title": "Your first application",
+    "section": "Your first application",
+    "text": "Your first application\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| components: [editor, viewer]\n#| layout: horizontal\n#| viewerHeight: 500\n\nfrom palmerpenguins import load_penguins\nfrom plotnine import aes, geom_histogram, ggplot, theme_minimal\nfrom shiny.express import input, render, ui\n\ndat = load_penguins()\nspecies = dat[\"species\"].unique().tolist()\n\nui.input_radio_buttons(\"species\", \"Species\", species, inline=True)\n\n\n@render.plot\ndef plot():\n    sel = dat[dat[\"species\"] == input.species()]\n    return (\n        ggplot(aes(x=\"bill_length_mm\"))\n        + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n        + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n        + theme_minimal()\n    )\n\n  \n    −\n    +\n \n 05:00"
+  },
+  {
+    "objectID": "slides/01-intro/01-welcome.html#get-your-computer-ready",
+    "href": "slides/01-intro/01-welcome.html#get-your-computer-ready",
+    "title": "Welcome",
+    "section": "Get your computer ready",
+    "text": "Get your computer ready\nIf you haven’t done so, please have your computer set up for this workshop:\nhttps://chendaniely.github.io/scipy-2025-shiny/setup.html"
+  },
+  {
+    "objectID": "slides/01-intro/01-welcome.html#todays-goal",
+    "href": "slides/01-intro/01-welcome.html#todays-goal",
+    "title": "Welcome",
+    "section": "Today’s goal",
+    "text": "Today’s goal\nLearn how to build reactive web apps with Shiny for Python, from the simple to the mission critical."
+  },
+  {
+    "objectID": "slides/01-intro/01-welcome.html#who-you-are",
+    "href": "slides/01-intro/01-welcome.html#who-you-are",
+    "title": "Welcome",
+    "section": "Who you are",
+    "text": "Who you are\n\nHave you used:\n\nPython?\nDashboard?\nHTML, CSS, JavaScript?\nShiny (for R or Python)?"
+  },
+  {
+    "objectID": "slides/01-intro/01-welcome.html#goals-for-this-section",
+    "href": "slides/01-intro/01-welcome.html#goals-for-this-section",
+    "title": "Welcome",
+    "section": "Goals for this section",
+    "text": "Goals for this section\n\nUnderstand the “whole game”/ big picture\nIdentify the resources that will support you\nDevelop comfort with debugging\nGenAI + LLMs in your dashboards and applications\nModules and Testing\nQ+A with the Shiny Developers"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "SciPy 2025: Shiny for Python",
@@ -21,18 +175,54 @@
     "text": "FAQ\n\nWhat if I’m a complete beginner?\nYou should have a basic understanding of Python and be able to install packages with pip, do basic data manipulation, and draw plots.\n\n\nWhat if I’ve never built a Shiny app before?\nThis workshops doesn’t require any Shiny or web application experience. We’ll focus more on practical examples in the course. We do have additional resources for you to dive more into more Shiny details, but we will cover the basics needed to build larger and scalable applications.\n\n\nWhy should I learn Shiny if I already know Streamlit or Dash?\nWe believe that Shiny is the best framework for building data applications in Python. It’s reactive execution model means that you can build performant applications without explicitly caching data or managing application state. See this blog post for more on why we think that Shiny is worth learning.\n\n\nI already know Shiny for R, is this workshop for me?\nThe R and Python Shiny packages are quite similar, so some of the content in this workshop may be familiar to you. That said it’s a great opportunity to fill in missing pieces and ask question about Python best practices. We will also talk about Shiny modules and testing in this workshop, which will also be a precursor for you to learn more or incorporate Python Packaging to your Shiny applications."
   },
   {
+    "objectID": "01-02-intro-shiny.html",
+    "href": "01-02-intro-shiny.html",
+    "title": "Shiny introduction",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Introduction",
+      "Shiny introduction"
+    ]
+  },
+  {
+    "objectID": "01-01-welcome.html",
+    "href": "01-01-welcome.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Introduction",
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "01-03-first-app.html",
+    "href": "01-03-first-app.html",
+    "title": "Your first application",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Introduction",
+      "Your first application"
+    ]
+  },
+  {
     "objectID": "setup.html",
     "href": "setup.html",
     "title": "Setup",
     "section": "",
-    "text": "Pick one of the following ways to set up your Python environment.\nHere is the requirements.txt you will need to set up the environment.\naltair\nanthropic\nanthropic[bedrock]\nboto3\nchatlas\nfaicons\nipykernel\nlangchain\nlangchain-anthropic\nlangchain-openai\nlanggraph\nopenai\npalmerpenguins\npandas\npillow\nplaywright\nplotly\nplotnine\npython-dotenv\nquerychat @ git+https://github.com/posit-dev/querychat\nrequests\nridgeplot\nseaborn\nshiny\nshinychat\nshinywidgets\ntokenizers\n\n\nconda create -n shiny python=3.12\nconda activate shiny\npip install -r requirements.txt\n\n\n\npython -m venv venv\nsource venv/bin/activate && pip install -r requirements.txt\n\n\n\nuv venv venv\nsource venv/bin/activate && uv pip install -r requirements.txt"
+    "text": "Pick one of the following ways to set up your Python environment.\nHere is the requirements.txt you will need to set up the environment.\naltair\nanthropic\nanthropic[bedrock]\nboto3\nchatlas\nfaicons\nipykernel\njupyter\nlangchain\nlangchain-anthropic\nlangchain-openai\nlanggraph\nopenai\npalmerpenguins\npandas\npillow\nplaywright\nplotly\nplotnine\npython-dotenv\nquerychat @ git+https://github.com/posit-dev/querychat\nrequests\nridgeplot\nseaborn\nshiny\nshinychat\nshinylive\nshinywidgets\ntokenizers\n\n\nconda create -n shiny python=3.12\nconda activate shiny\npip install -r requirements.txt\n\n\n\npython -m venv venv\nsource venv/bin/activate && pip install -r requirements.txt\n\n\n\nuv venv venv\nsource venv/bin/activate && uv pip install -r requirements.txt"
   },
   {
     "objectID": "setup.html#python",
     "href": "setup.html#python",
     "title": "Setup",
     "section": "",
-    "text": "Pick one of the following ways to set up your Python environment.\nHere is the requirements.txt you will need to set up the environment.\naltair\nanthropic\nanthropic[bedrock]\nboto3\nchatlas\nfaicons\nipykernel\nlangchain\nlangchain-anthropic\nlangchain-openai\nlanggraph\nopenai\npalmerpenguins\npandas\npillow\nplaywright\nplotly\nplotnine\npython-dotenv\nquerychat @ git+https://github.com/posit-dev/querychat\nrequests\nridgeplot\nseaborn\nshiny\nshinychat\nshinywidgets\ntokenizers\n\n\nconda create -n shiny python=3.12\nconda activate shiny\npip install -r requirements.txt\n\n\n\npython -m venv venv\nsource venv/bin/activate && pip install -r requirements.txt\n\n\n\nuv venv venv\nsource venv/bin/activate && uv pip install -r requirements.txt"
+    "text": "Pick one of the following ways to set up your Python environment.\nHere is the requirements.txt you will need to set up the environment.\naltair\nanthropic\nanthropic[bedrock]\nboto3\nchatlas\nfaicons\nipykernel\njupyter\nlangchain\nlangchain-anthropic\nlangchain-openai\nlanggraph\nopenai\npalmerpenguins\npandas\npillow\nplaywright\nplotly\nplotnine\npython-dotenv\nquerychat @ git+https://github.com/posit-dev/querychat\nrequests\nridgeplot\nseaborn\nshiny\nshinychat\nshinylive\nshinywidgets\ntokenizers\n\n\nconda create -n shiny python=3.12\nconda activate shiny\npip install -r requirements.txt\n\n\n\npython -m venv venv\nsource venv/bin/activate && pip install -r requirements.txt\n\n\n\nuv venv venv\nsource venv/bin/activate && uv pip install -r requirements.txt"
   },
   {
     "objectID": "setup.html#ide",
@@ -54,5 +244,110 @@
     "title": "Setup",
     "section": "Check your installation",
     "text": "Check your installation\n\nClone / download this repository: https://github.com/chendaniely/scipy-2025-shiny\nActivate the Python environment with the packages you just installed\nRun the test-install.py app and script with: shiny run test-install.py\n\nYou should see output like this\n$ shiny run test-install.py\nINFO:     Started server process [46615]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#what-is-a-shiny-app",
+    "href": "slides/01-intro/02-intro-shiny.html#what-is-a-shiny-app",
+    "title": "Introduction to Shiny",
+    "section": "What is a Shiny app?",
+    "text": "What is a Shiny app?\nEach Shiny app involves:\n\nA web page\nA computer that watches the web page and responds to user events on that page"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#what-is-a-shiny-app-1",
+    "href": "slides/01-intro/02-intro-shiny.html#what-is-a-shiny-app-1",
+    "title": "Introduction to Shiny",
+    "section": "What is a Shiny app?",
+    "text": "What is a Shiny app?\nEach Shiny app involves:\n\nA web page\nA computer that watches the web page and responds to user events on that page"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#what-is-a-shiny-app-2",
+    "href": "slides/01-intro/02-intro-shiny.html#what-is-a-shiny-app-2",
+    "title": "Introduction to Shiny",
+    "section": "What is a Shiny app?",
+    "text": "What is a Shiny app?\nEach Shiny app involves:\n\nA web page\nA computer that watches the web page and responds to user events on that page"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#components",
+    "href": "slides/01-intro/02-intro-shiny.html#components",
+    "title": "Introduction to Shiny",
+    "section": "Components",
+    "text": "Components\n\n\nEach Shiny app consists of:\n\nInputs"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#components-1",
+    "href": "slides/01-intro/02-intro-shiny.html#components-1",
+    "title": "Introduction to Shiny",
+    "section": "Components",
+    "text": "Components\n\n\nEach Shiny app consists of:\n\nInputs\nOutputs"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#components-2",
+    "href": "slides/01-intro/02-intro-shiny.html#components-2",
+    "title": "Introduction to Shiny",
+    "section": "Components",
+    "text": "Components\n\n\nEach Shiny app consists of:\n\nInputs\nOutputs\nInstructions on how to build outputs from inputs"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#reactivity",
+    "href": "slides/01-intro/02-intro-shiny.html#reactivity",
+    "title": "Introduction to Shiny",
+    "section": "Reactivity",
+    "text": "Reactivity\n\n\nWhen an input changes, Shiny reacts by rebuilding the outputs that depend on it, and only those outputs."
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#spreadsheet-analogy",
+    "href": "slides/01-intro/02-intro-shiny.html#spreadsheet-analogy",
+    "title": "Introduction to Shiny",
+    "section": "Spreadsheet Analogy",
+    "text": "Spreadsheet Analogy\n\n\n\n\n\n\nInputs\nOutputs\nInstructions on how to build outputs from inputs"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#spreadsheet-analogy-1",
+    "href": "slides/01-intro/02-intro-shiny.html#spreadsheet-analogy-1",
+    "title": "Introduction to Shiny",
+    "section": "Spreadsheet Analogy",
+    "text": "Spreadsheet Analogy\n\n\n\n\n\nUpdates:\n\nWhen an input changes\nOnly the parts of the app that depend on the input"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#key-features-of-reactivity",
+    "href": "slides/01-intro/02-intro-shiny.html#key-features-of-reactivity",
+    "title": "Introduction to Shiny",
+    "section": "Key features of reactivity",
+    "text": "Key features of reactivity\n\nEasy enough to use for prototypes\nEfficient enough to handle complexity\nScales to build production quality apps"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#why-shiny-for-python",
+    "href": "slides/01-intro/02-intro-shiny.html#why-shiny-for-python",
+    "title": "Introduction to Shiny",
+    "section": "Why Shiny for Python?",
+    "text": "Why Shiny for Python?\nShiny lets you quickly create reactive web apps without worrying about:\n\ncache\nstate\ncallbacks\n…or even HTML, CSS, and JavaScript\n\nAnd, these apps can scale from prototype to production-ready."
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#quiz-find-the-inputs-and-outputs",
+    "href": "slides/01-intro/02-intro-shiny.html#quiz-find-the-inputs-and-outputs",
+    "title": "Introduction to Shiny",
+    "section": "Quiz: Find the inputs and outputs",
+    "text": "Quiz: Find the inputs and outputs"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#quiz-find-the-inputs-and-outputs-1",
+    "href": "slides/01-intro/02-intro-shiny.html#quiz-find-the-inputs-and-outputs-1",
+    "title": "Introduction to Shiny",
+    "section": "Quiz: Find the inputs and outputs",
+    "text": "Quiz: Find the inputs and outputs"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#quiz-find-the-inputs-and-outputs-2",
+    "href": "slides/01-intro/02-intro-shiny.html#quiz-find-the-inputs-and-outputs-2",
+    "title": "Introduction to Shiny",
+    "section": "Quiz: Find the inputs and outputs",
+    "text": "Quiz: Find the inputs and outputs"
+  },
+  {
+    "objectID": "slides/01-intro/02-intro-shiny.html#tell-me-about-shiny-express",
+    "href": "slides/01-intro/02-intro-shiny.html#tell-me-about-shiny-express",
+    "title": "Introduction to Shiny",
+    "section": "Tell me about Shiny Express",
+    "text": "Tell me about Shiny Express\n\n\n\n\n\n\nImportant\n\n\nShiny for Python has two syntaxes for writing the same apps:\n\nShiny Express - lightweight syntax informed by notebooks\nShiny Core - more verbose syntax similar to Shiny for R\n\n\n\n\nToday, we will learn Shiny Express."
   }
 ]
