@@ -37,6 +37,9 @@ website:
             - href: 01-01-welcome.qmd
             - href: 01-02-intro-shiny.qmd
             - href: 01-03-first-app.qmd
+        - section: "Building a Shiny Application"
+          contents:
+            - href: 02-01-reactivity.qmd
 format:
   html:
     theme:

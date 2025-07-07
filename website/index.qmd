@@ -11,26 +11,26 @@ your own scalable production-ready python applications.
 ## Schedule
 
 :::{.column-body}
-| Time  | Activity                                              |
-| :---- | :---------------------------------------------------- |
-| 13:30 | [Welcome!](01-01-welcome.qmd)                         |
-| 13:40 | [Introduction to Shiny](01-02-intro-shiny.qmd)        |
-| 13:50 | [Your first application](01-03-first-app.qmd)         |
-| 14:20 | *break*                                               |
-| 14:30 | [A more complex application]()                        |
-| 14:-- | [Shiny's reactivity programming model]()              |
-| 15:-- | [Deploying your application to the web (for free!)]() |
-| 15:20 | *break*                                               |
-| 15:-- | [Anatomy of a conversation]()                         |
-| 15:-- | [Demo: 20 Questions][demo20q]                         |
-| 15:-- | [Your first chat with an LLM]()                       |
-| 15:-- | [AI Chat Interfaces]()                                |
-| 15:-- | [Tool Calling]()                                      |
-| 16:20 | *break*                                               |
-| 16:30 | [Shiny modules]()                                     |
-| 16:-- | [Testing your shiny apps with playwright]()           |
-| 17:00 | Q+A with the Shiny engineers                          |
-| 17:30 | End                                                   |
+| Time  | Activity                                                     |
+| :---- | :----------------------------------------------------------- |
+| 13:30 | [Welcome!](01-01-welcome.qmd)                                |
+| 13:40 | [Introduction to Shiny](01-02-intro-shiny.qmd)               |
+| 13:50 | [Your first application](01-03-first-app.qmd)                |
+| 14:20 | *break*                                                      |
+| 14:30 | [Shiny's reactivity programming model](02-01-reactivity.qmd) |
+| 14:45 | [A more complex application]()                               |
+| 15:10 | [Deploying your application to the web (for free!)]()        |
+| 15:20 | *break*                                                      |
+| 15:-- | [Anatomy of a conversation]()                                |
+| 15:-- | [Demo: 20 Questions][demo20q]                                |
+| 15:-- | [Your first chat with an LLM]()                              |
+| 15:-- | [AI Chat Interfaces]()                                       |
+| 15:-- | [Tool Calling]()                                             |
+| 16:20 | *break*                                                      |
+| 16:30 | [Shiny modules]()                                            |
+| 16:-- | [Testing your shiny apps with playwright]()                  |
+| 17:00 | Q+A with the Shiny engineers                                 |
+| 17:30 | End                                                          |
 :::
 
 ## FAQ
