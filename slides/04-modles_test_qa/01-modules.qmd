@@ -1,0 +1,615 @@
+---
+title: Shiny Modules
+format:
+  revealjs:
+    footer: "SciPy 2025. <https://github.com/chendaniely/scipy-2025-shiny>"
+    slide-number: true
+    show-slide-number: all
+    smaller: true
+---
+
+## Shiny modules
+
+- Share a few tips, tricks, and "code smells" for using Shiny modules
+
+- Shiny modules:
+    - Namespaceing (isolation)
+    - Reuse code (just like a normal function)
+    - Do not need to worry about duplicate IDs as you reuse modules
+
+- Similar to a normal function
+    - Inputs and outputs (not to be confused with Shiny inputs and outputs)
+
+## Motivation
+
+::: {.columns}
+::: {.column}
+![](/img/modules-motivation-before.png)
+:::
+::: {.column}
+![](/img/modules-motivation-after.png)
+:::
+:::
+
+::: {.citation}
+- Mastering Shiny: Shiny modules: <https://mastering-shiny.org/scaling-modules.html>
+- [Eric Nantz | Effective use of Shiny modules in application development | RStudio (2019)](https://www.youtube.com/watch?v=ylLLVo2VL50&ab_channel=PositPBC)
+:::
+
+## An Application
+
+```{shinylive-python}
+#| standalone: true
+#| viewerHeight: 550
+
+{{< include /../code/04-modules_test/app-01.py >}}
+
+```
+
+::: {.notes}
+Here's the application we'll be talking though today.
+It's a simple app with some filtering sliders on the left,
+and a dataframe display on the right.
+
+We'll cover how we go from a basic simple application and slowly improve it
+over a series of iterations into a module.
+:::
+
+# Example 1: Initial app
+
+## UI code
+
+```{.python code-line-numbers="3,9,20"}
+app_ui = ui.page_sidebar(
+    ui.sidebar(
+        ui.input_checkbox_group(                              #<<
+            id="filter_species",
+            label="Select species",
+            choices=sorted(penguins["species"].unique()),
+            selected=sorted(penguins["species"].unique()),
+        ),
+        ui.input_slider(                                      #<<
+            id="filter_bill_length_mm",
+            label="Range for bill_length_mm",
+            min=float(penguins["bill_length_mm"].min()),
+            max=float(penguins["bill_length_mm"].max()),
+            value=[
+                float(penguins["bill_length_mm"].min()),
+                float(penguins["bill_length_mm"].max()),
+            ],
+            step=1,
+        ),
+        ui.input_slider(                                      #<<
+            id="filter_body_mass_g",
+            label="Range for body_mass_g",
+            min=float(penguins["body_mass_g"].min()),
+            max=float(penguins["body_mass_g"].max()),
+            value=[
+                float(penguins["body_mass_g"].min()),
+                float(penguins["body_mass_g"].max()),
+            ],
+            step=1,
+        ),
+    ),
+    ui.card(
+        ui.card_header("Filtered Penguins Data"),
+        ui.output_data_frame("filtered_data"),
+    ),
+)
+```
+
+[shinylive-app01][shinylive-app01]
+
+## Server code
+
+```{.python code-line-numbers="2,4,5,7-9,16,20,21,23-25"}
+def server(input, output, session):
+    @reactive.calc                                                      #<< reactive calc
+    def get_filtered_data():
+        # Start with all rows                                           #<<
+        mask = pd.Series(True, index=penguins.index)                    #<< mask
+
+        # Apply filters for each column                                 #<< apply filters
+        for col in penguins.columns:                                    #<< for each column
+            if pd.api.types.is_numeric_dtype(penguins[col]):            #<< if numeric
+                min_val, max_val = input[f"filter_{col}"]()
+                mask = (
+                    mask
+                    & (penguins[col] >= min_val)
+                    & (penguins[col] <= max_val)
+                )
+            else:                                                       #<< else
+                selected_categories = input[f"filter_{col}"]()
+                mask = mask & penguins[col].isin(selected_categories)
+
+        # Return the filtered data                                      #<< return filtered data
+        return penguins[mask]                                           #<<
+
+    @render.data_frame                                                  #<< dataframe to display
+    def filtered_data():                                                #<<
+        return get_filtered_data()                                      #<<
+```
+
+[shinylive-app01][shinylive-app01]
+
+
+# Example 2: Loop to create UI elements
+
+## UI code
+
+```{.python code-line-numbers="1-3,6,19"}
+# use a loop instead of listing individual components    #<<
+ui_filters = {}                                          #<< dictionary to hold the filters by name
+for col in penguins.columns:                             #<< loop through the columns specified
+    # numeric columns have a 2 way slider
+    if pd.api.types.is_numeric_dtype(penguins[col]):
+        ui_filters[col] = ui.input_slider(               #<< add the component to the dict
+            id=f"filter_{col}",
+            label=f"Range for {col}",
+            min=float(penguins[col].min()),
+            max=float(penguins[col].max()),
+            value=[
+                float(penguins[col].min()),
+                float(penguins[col].max()),
+            ],
+            step=1,
+        )
+    else:
+        # categorical columns get a checkbox
+        ui_filters[col] = ui.input_checkbox_group(       #<< add a different component
+            id=f"filter_{col}",
+            label=f"Select {col}",
+            choices=sorted(penguins[col].unique()),
+            selected=sorted(penguins[col].unique()),
+        )
+```
+
+# Example 3: Need to track more information
+
+::: {.notes}
+What if we want a bit more flexibility in what kind of input component we use?
+Maybe we want to leave space for a manual override of inputs.
+
+For example, what if we want a single value slider, instead of a slider range?
+:::
+
+## UI code
+
+```{.python code-line-numbers="6,7,19"}
+for col in penguins.columns:
+    if pd.api.types.is_numeric_dtype(penguins[col]):
+        min_val = float(penguins[col].min())
+        max_val = float(penguins[col].max())
+        ui_filters[col] = {
+            "filter_method": "sliders2_between",                        #<< what kind of filter
+            "component": ui.input_slider(                               #<< actual component
+                id=f"filter_{col}",
+                label=f"Range for {col}",
+                min=min_val,
+                max=max_val,
+                value=[min_val, max_val],
+                step=1,
+            ),
+        }
+...
+
+    ui.sidebar(
+        *[(ui_filters[col]["component"]) for col in penguins.columns],  #<< all components in the UI
+    ),
+```
+
+::: {.notes}
+We would then add another key that stores that information.
+We could use this sometime in the future to set a different input component.
+:::
+
+# Example 4: Render UI
+
+::: {.notes}
+Finally, let's move the code into a `render.ui`.
+:::
+
+## Code changes
+
+UI code
+
+```{.python code-line-numbers="2"}
+    ui.sidebar(
+        ui.output_ui("df_filters"),                                          #<< render UI ID
+    ),
+```
+
+Server code
+
+```{.python code-line-numbers="1-2"}
+    @render.ui                                                               #<<
+    def df_filters():                                                        #<< ID for render UI
+        return [(ui_filters[col]["component"]) for col in penguins.columns]
+
+```
+
+# Recap
+
+## So far...
+
+- Use a `for` loop to **create** the input components
+- Use a `for` loop to **read** the input components
+- Use a `for` loop to **place** the input components in the UI
+- Define a helper function that **creates** the input components
+- Dynamically render the ui with `@render.ui`
+
+<br />
+
+- For each column: track the column name, label, column dtype, input component
+
+## Code smell: Tracking List(s) of Component Values
+
+:::{.incremental}
+- Calling the same component creating function multiple times.
+- Creating a list of `id` values and iterating over and calling a function that makes a component.
+- Creating at least 2 lists that track the `id` and some other input for the component.
+    - For example a separate list for the `id` or `label`, but can also include things like a column name of a dataframe.
+- Iterating across lists(s) to ensure inputs are captured together
+    - Especially if you find your self using the `zip()` function
+:::
+
+More on the Shiny for Python Module documentation: <https://shiny.posit.co/py/docs/modules.html>
+
+## Our Example
+
+```{.python code-line-numbers="1,5,6"}
+for col in penguins.columns:                          #<< column
+    if pd.api.types.is_numeric_dtype(penguins[col]):
+        ...
+        ui_filters[col] = {
+            "filter_method": ...,                     #<< method
+            "component": ...(                         #<< component
+```
+
+## Another Example
+
+All 3 bits of information needed to be tracked together.
+
+```{.python}
+cols = ["size", "id", "total_bill"]
+col_types = ["cat", "cat", "sliders"]
+filters = ["filter_size", "filter_id", "filter_total_bill"]
+
+for fltr, col, col_type in zip(filters, cols, col_types):
+    ...
+```
+
+- I should only need to pass in 1 bit of information (column name)
+- The rest can be calculated
+
+::: {.notes}
+cols: tied to the filters variable, and used to extract the corresponding column from the data.
+
+col_type: determine how the data needed to be filtered. For example, selectize components always return values as a list of strings (List[str]), and needed to be converted to a numeric type to filter the data.
+
+filters: get the user inputs from the ui.
+:::
+
+
+## Code smell: Complex and Interweaved Behaviors
+
+- Dynamically creating component ids
+- Complex/complicated operations needing multiple other `@reactive` intermediate steps
+- Coupling: changes in the codebase in many parts of the application in both the `server()` and `ui`
+
+## Dynamically creating IDs
+
+```{.python code-line-numbers="1,7"}
+for col in penguins.columns:                          #<< looping through columns
+    if pd.api.types.is_numeric_dtype(penguins[col]):
+        ...
+        ui_filters[col] = {
+            "filter_method": "sliders2_between",
+            "component": ui.input_slider(
+                id=f"filter_{col}",                   #<< id based on colname
+                ...
+            ),
+        }
+```
+
+## Complex operations
+
+![](img/modules-motivation-after.png)
+
+## Coupling
+
+```{.python code-line-numbers="3,7-9,15-17"}
+# UI snippet
+for col in columns:
+    if pd.api.types.is_numeric_dtype(df[col]):    #<< need a data type check
+        min_val = float(df[col].min())
+        max_val = float(df[col].max())
+        ui_filters[col] = {
+            "filter_method": "sliders2_between",  #<< specify the slider type
+            "component": ui.input_slider(         #<< specify component
+                f"filter_{col}",                  #<< create component ID
+
+...
+
+# server snippet
+for col in penguins.columns:
+    if ui_filters[col]["filter_method"] == "sliders2_between":  #<< make slider type check
+        min_val, max_val = input[f"filter_{col}"]()             #<<
+        mask = mask & penguins[col].between(min_val, max_val)   #<<
+    elif ui_filters[col]["filter_method"] == "list_isin":
+        ...
+
+```
+
+# Modules
+
+## Shiny Modules
+
+- Reactive calculations need to happen in a reactive context
+
+- Otherwise similar to a Python "module"
+
+Also:
+
+- Component's IDs **must** be unique
+    - Reusing functions that create IDs can be problematic
+    - Hence, namespacing
+
+## Normal Python function
+
+```{.python code-line-numbers="1,11"}
+def create_ui_filters(data, columns):                #<< filter creating as a function
+    ui_filters = {}
+
+    for col in columns:
+        if pd.api.types.is_numeric_dtype(data[col]):
+            min_val = float(data[col].min())
+            max_val = float(data[col].max())
+            ui_filters[col] = {
+                "filter_method": "sliders2_between",
+                "component": ui.input_slider(
+                    id=f"filter_{col}",              #<< IDs need to be namespaced if colnames repeat
+                    label=f"Range for {col}",
+                    min=min_val,
+                    max=max_val,
+                    value=[min_val, max_val],
+                    step=1,
+                ),
+            }
+
+        else:
+            ...
+
+    return ui_filters
+```
+
+## Shiny Module UI (and server)
+
+```{.python code-line-numbers="1,3,11"}
+@module.ui                                                         #<< Module UI
+def filter_ui():
+    return ui.output_ui("filters")                                 #<< renderUI ID
+
+
+@module.server
+def filter_server(input, output, session, data, columns):
+    ...
+
+    @render.ui
+    def filters():                                                 #<< module render UI - ID
+        return [(ui_filters[col]["component"]) for col in columns]
+
+    ...
+```
+
+## Shiny Module server
+
+```{.python code-line-numbers="1,2,8,20,22,23"}
+@module.server
+def filter_server(input, output, session, data, columns): #<< pass in other variables
+    ui_filters = create_ui_filters(data, columns)         #<< !! create the inputs inside the server
+
+    ...
+
+    @reactive.calc
+    def get_filter_mask():                                #<< same reactive
+        mask = pd.Series(True, index=data.index)
+
+        for col in columns:
+            if ui_filters[col]["filter_method"] == "sliders2_between":
+                min_val, max_val = input[f"filter_{col}"]()
+                mask = mask & data[col].between(min_val, max_val)
+            elif ui_filters[col]["filter_method"] == "list_isin":
+                selected_categories = input[f"filter_{col}"]()
+                mask = mask & data[col].isin(selected_categories)
+            ...
+
+        return mask                                      #<< reactive returns mask, instead of dataframe
+
+    return {                                             #<< module returns mask
+        "mask": get_filter_mask,                         #<< note it's the reactive w/out ()
+    }
+```
+
+## Application root: using the module
+
+```{.python code-line-numbers="3,14-16,20,24"}
+app_ui = ui.page_sidebar(
+    ui.sidebar(
+        filter_ui("module"),                       #<< 4. use the ui from module, same namespace
+    ),
+    ui.card(
+        ui.card_header("Filtered Penguins Data"),
+        ui.output_data_frame("filtered_data"),
+    ),
+)
+
+
+# Define the server logic
+def server(input, output, session):
+    filter_module = filter_server(                 #<< 1. call the module
+        "module",                                  #<< 2. provide namespace
+        data=penguins,                             #<< 3. pass in any module inputs
+        columns=penguins.columns,
+    )
+
+    module_filter_mask = filter_module["mask"]     #<< 5. optional, explicitly extract module return
+
+    @render.data_frame
+    def filtered_data():
+        return penguins.loc[module_filter_mask()]  #<< 6. use value from module
+```
+
+## Python modules and packages
+
+Create separate python modules:
+
+- `helper.py`: Helper function, `create_ui_filters`
+- `module.py`: Shiny module
+
+Now that you have separate modules, you can put them into a Python package!
+
+- pyOpenSci Python Package Guide (hatch): <https://www.pyopensci.org/>
+- Python Packages (poetry): <https://py-pkgs.org/>
+
+```bash
+pip install module
+```
+
+```python
+import module
+```
+
+## Refactored Application
+
+```{.python code-line-numbers="14,23,29,33"}
+from shiny import App, ui, render
+from palmerpenguins import load_penguins
+
+import module
+
+penguins = (
+    load_penguins()
+    .dropna()
+    .loc[:, ["species", "bill_length_mm", "body_mass_g"]]
+)
+
+app_ui = ui.page_sidebar(
+    ui.sidebar(
+        module.filter_ui("module"),                #<< module UI
+    ),
+    ui.card(
+        ui.card_header("Filtered Penguins Data"),
+        ui.output_data_frame("filtered_data"),
+    ),
+)
+
+def server(input, output, session):
+    filter_module = module.filter_server(          #<< module server
+        "module",
+        data=penguins,
+        columns=penguins.columns,
+    )
+
+    module_filter_mask = filter_module["mask"]     #<< module return mask
+
+    @render.data_frame
+    def filtered_data():
+        return penguins.loc[module_filter_mask()]  #<< use module mask
+
+app = App(app_ui, server)
+```
+
+# Wait! There's more!
+
+## Main reason to use Shiny Modules
+
+- You really create a shiny module so you can reuse it.
+    - That's the entire point of namespacing.
+
+So, we can...
+
+- Create a UI where we have multiple datasets and each dataset has a filter + dataframe view card
+
+## Example
+
+<iframe src="https://shinylive.io/py/app/#code=NobwRAdghgtgpmAXGKAHVA6VBPMAaMAYwHsIAXOcpMAMwCdiYACAZwAsBLCbJjmVYnTJMAgujxMArhwl1KAEzh0AOhHqMmqKABt4dVJQDm0iC179Bw7cSjyA+gYjGuLVar4ChTGMXmTtcG4Qjs6mAIxMALxMABSqTAlM1rYORiYsMQCU8YkY8gyo0Fk5CRjWhMCIEsDKYCwGhBxwrvhMtQBGHNradgFOZGx2MDC1Eh2+2ENQLCx2hrUAuguq2RCqIekATFGxJUk29hsuxRCJTHkFRatnZcQVVUw1YBws2lAQ8qNtdXAAHl+1bBwKAqVq1GjaDjoJS9IwDIYjMBLFZBNCoOzSHbSLBQQxwOw0LpvdoBOKnRLY6AANxYcDIdkIIPsZCg7TJZzOlKgVIc7zg2nZHKFtQACmkXEwwqM9kKEtjGXR5ILZbLsW9sMRJPSWBxFO0QcqVUbsTq9QaZUbLT4-AEMITtBQ6BiOHEwNb-HApWBMngLZazj6-f65RwMJqyKgtXZ5FAWQS6LA4K77Y64PYYyyvYHycGEtng-nZYWhVyeVoIPzDSrReLTExNtKc8bQwqlUGVWqoBqo6a4Pq6FXcyGML3+4Oh2d3baUzDpK6p3AG97fU2J0xi2upKHw5H6RmoPHE8muqn07GoEuNwWV9egxvs6sgooaKwlFSlDEuLuJDutRJaTMHCkJkiB7AAxJotZmBE+5MAAtAhCF7DOToLhE0QLnaJ4wrSdDvgOQa1GhjYqvukRHOEN6yiQ2iSDApjkVBYQYDRdGmFReZBJOvgegS2GodMADW6FMChQw8QEYRPDAQmLFxiQAAJyB8Sh5Oeh7wHsz6ifxabRueYRZKBq6JHIZCSHQpwUSwzHlMAC58Q6MIySwwlZMsaxNhB1n1kwsGIUhTZiQu2wYRJcBYU5Tq4fh47fCFJGymR1mbBxHKsfRLCMU4WwscQtGZWlj5Ng5wVCaFOlReJNqLtJslIvJCRKQoqn7hpgRNtpKF6fumxGUGZkWVZUGbLcFSlfxUyuX1mQeai6A7GIqAxGizr-m+SirGAAC+eDgNA8DUGw-IGHQWC4AQJDkJQZDUB4liaO8MZmNMmifGoDDMOwXA8PdXjSEEqjaYQcixvi0iOY6GT7hIGWmCBewQyhZjRCA22NaJghMDRvCnHDLDGSqHAvqg8gYGgoZkNgBgsBgLx2BAdFKBwhDRlTBgxPuwA0QsCMmUKMBcHYVI6DsEI2GQnPntz+ULBggsQFk1z+jJvzC6L0Ti7GUssjL2hy6rSvthSHCQ0oLB6wsOwgMbwq0JN8ADL4tSIN8ry6ubmx2O0dIAO5wJQiVDrUJAWBW5Au1udPBD2kKKAR-O5jQ4KTSANHo-gttGsnYAAErvHimN0Ewaf5RnaVrgrkQK+r2gVxOqvV1Aasi3XWcqq3khwJE9lC63Eiq7XCz10OLAUKgkRhCPRpXrK6OeSq-K0oT-qSBAHAAI5dzsLCWGmOtQJbGBr5vXdG4nnKm8jlvW+3iQp1VjtsM7SDfJCY92C8XBB7mIeMAI4cyCR2xF+KMhBjqEEEu0YgatDAMEkMtO+Qoc5iVLtocuSCOQ5wAMr8jgIQYQaCMEX39OA4gLNmiRBPlvOA09gy0gCAQtMVD140LoUWdhCR557EGpZLcZs6CuAgDtPakBEzUEwjgfARBSAUCoMgP6whyzPSYK9Umqh1BfU4NwcwnhhALlkC1OgEhpCGKgAQjg74giaKYMdbQp1dEPRBsCCgzoBFCKCApTCAMVIvjEnOPmZxeGnGxL+ekc4H5Q1qMVVQXjwojg2ioXxlVHR2Bih+UBZAfxam-K+QCpAJAw2xvlNiLBAkm3cTsZxYM3HIwPrDEpmVipnGaipM6PizhdX4hkcpQpgmPBiEjbplsnihwATdRYmQi7FO0LjGZpS5pNmauYsgliIqMm0IQLScAXx4npGVVy-VE4uUEjsUmGBcF0CaBkAAKnQLuEguCKF+JEfc0dnnNNlDQLGOMuDzMyivS0xN+HXx5k8YKdJn6fCRFEaItR3bxxYF7H2ZB-aByQJgmu-dvDN1rjsTJwAUGp3TosE4lchI7BOUwAAZH5aWPMMAorRYrLFOgB64tbsrS0-JgVDKihbMFkTnKQpflbSIcKwDv3pF-NYGKSFCgYfgig9hGQUEMIIa5+KY5kEJUKp0RDSVctzFSjCFLaVcwZTKmIiqmEqrBuqq5zQjWL20MvTBCYXhwCYAANR0F3AAonQBgSSBp0iGji1yGN+k20TkReqrs9kCKmoJNK88doLCAA" height="550" width="1200">
+</iframe>
+
+[shinylive-app08][shinylive-app08]
+
+## Example Data
+
+```{.python}
+penguins1 = (
+    load_penguins()
+    .dropna()
+    .loc[:, ["species", "bill_length_mm", "body_mass_g"]]
+)
+
+penguins2 = (
+    load_penguins()
+    .dropna()
+    .loc[:, ["island", "sex", "year", "flipper_length_mm"]]
+)
+```
+
+## Example Server
+
+```{.python code-line-numbers="2,4,14,16"}
+def server(input, output, session):
+    # penguins 1 data -----                          #<< rename to penguins1
+    filter_module1 = module.filter_server(
+        "module1",                                   #<< module1 ID
+        data=penguins1,
+        columns=penguins1.columns,
+    )
+    module_filter_mask1 = filter_module1["mask"]
+
+    @render.data_frame
+    def filtered_data1():
+        return penguins1.loc[module_filter_mask1()]
+
+    # penguins 2 data -----                          #<< call same module with penguins2
+    filter_module2 = module.filter_server(
+        "module2",                                   #<< module2 ID
+        data=penguins2,
+        columns=penguins2.columns,
+    )
+    module_filter_mask2 = filter_module2["mask"]
+
+    @render.data_frame
+    def filtered_data2():
+        return penguins2.loc[module_filter_mask2()]
+```
+
+## Example UI
+
+```{.python code-line-numbers="1,2,8,10,19,21"}
+app_ui = ui.page_fillable(                                   #<< fillable
+    ui.navset_card_tab(                                      #<< card tab layout
+        ui.nav_panel(
+            "Penguins 1",
+            ui.card(
+                ui.layout_sidebar(
+                    ui.sidebar(
+                        module.filter_ui("module1"),         #<< module1 UI
+                    ),
+                    ui.output_data_frame("filtered_data1"),  #<< module 1 masked data
+                ),
+            ),
+        ),
+        ui.nav_panel(
+            "Penguins 2",
+            ui.card(
+                ui.layout_sidebar(
+                    ui.sidebar(
+                        module.filter_ui("module2"),         #<<
+                    ),
+                    ui.output_data_frame("filtered_data2"),  #<<
+                ),
+            ),
+        ),
+    ),
+)
+```

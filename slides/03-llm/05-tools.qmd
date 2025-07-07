@@ -1,0 +1,42 @@
+---
+title: Tool Calling
+
+format:
+  revealjs:
+    footer: "SciPy 2025. Slides: https://github.com/chendaniely/scipy-2025-shiny"
+    slide-number: true
+    show-slide-number: all
+    smaller: true
+
+editor:
+  render-on-save: true
+---
+
+## What is Tool Calling?
+
+- Allows LLMs to interact with other systems
+- Supported by most of the newest LLMs, but not all
+
+- Sounds complicated? Scary? It's not too bad, actually...
+
+Reference: <https://jcheng5.github.io/llm-quickstart/quickstart.html#/how-it-works>
+
+## How it does NOT work
+
+![](/img/toolcalling-no.png)
+
+## How it DOES work
+
+![](/img/toolcalling-yes.png)
+
+## Demo: Weather R
+
+```r
+{{< include /../code/03-llm/03-tools/ellmer-weather.R >}}
+```
+
+## Demo: Weather Python
+
+```python
+{{< include /../code/03-llm/03-tools/chatlas-weather.py >}}
+```

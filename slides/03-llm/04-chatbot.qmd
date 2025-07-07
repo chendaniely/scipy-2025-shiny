@@ -1,0 +1,55 @@
+---
+title: Chatbot User Interfaces (Shiny)
+
+format:
+  revealjs:
+    footer: "SciPy 2025. Slides: https://github.com/chendaniely/scipy-2025-shiny"
+    slide-number: true
+    show-slide-number: all
+    smaller: true
+
+editor:
+  render-on-save: true
+---
+
+## Shiny (R/Python)
+
+- R: <https://posit-dev.github.io/shinychat/r/>
+- Python: <https://posit-dev.github.io/shinychat/py/>
+
+
+## Demo: shinychat Python
+
+```python
+{{< include /../code/03-llm/02-shiny/app-shinychat.py >}}
+```
+
+## Chatting with your data
+
+- Interact with your data(frame) with SQL
+- <https://github.com/posit-dev/querychat>
+
+## Demo: querychat Python
+
+```python
+{{< include /../code/03-llm/02-shiny/app-querychat.py >}}
+```
+
+## Your turn: Change querrychat LLM
+
+- Modify one of the querychat examples and swap it with another model
+- Try using one of the local Ollama models and compare with your neighbor
+
+{{< countdown "10:00" play_sound="true">}}
+
+
+## Sidebot demo
+
+- Demo: <https://shiny.posit.co/py/templates/sidebot/>
+- use natural language to drill down into a dataset
+
+Python template example code:
+
+```bash
+shiny create --mode core --github jcheng5/py-databot
+```

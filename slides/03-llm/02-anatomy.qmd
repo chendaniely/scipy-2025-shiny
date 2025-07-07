@@ -1,0 +1,229 @@
+---
+title: "Anatomy of a Conversation"
+format:
+  revealjs:
+    footer: "SciPy 2025. Slides: https://github.com/chendaniely/scipy-2025-shiny"
+    slide-number: true
+    show-slide-number: all
+    smaller: true
+
+editor:
+  render-on-save: true
+---
+
+## LLM Conversations are HTTP Requests
+
+::: {.incremental}
+- Each interaction is a separate HTTP API request
+- The API server is entirely stateless (despite conversations being inherently stateful!)
+:::
+
+## Example Conversation
+
+::: {style="text-align: right;"}
+"What's the capital of the moon?"
+:::
+
+. . .
+
+`"There isn't one."`
+
+. . .
+
+::: {style="text-align: right;"}
+"Are you sure?"
+:::
+
+. . .
+
+`"Yes, I am sure."`
+
+## Example Request
+
+```{.bash code-line-numbers="|5|6-9|7|8"}
+curl https://api.openai.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d '{
+    "model": "gpt-4.1",
+    "messages": [
+        {"role": "system", "content": "You are a terse assistant."},
+        {"role": "user", "content": "What is the capital of the moon?"}
+    ]
+}'
+```
+- Model: model used
+- System prompt: behind-the-scenes instructions and information for the model
+- User prompt: a question or statement for the model to respond to
+
+## Example Response
+
+Abridged response:
+
+```{.json code-line-numbers="|3-6|7|12"}
+{
+  "choices": [{
+    "message": {
+      "role": "assistant",
+      "content": "The moon does not have a capital. It is not inhabited or governed.",
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 9,
+    "completion_tokens": 12,
+    "total_tokens": 21,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  }
+}
+```
+
+- Assistant: Response from model
+- Why did the model stop responding
+- Tokens: "words" used in the input and output
+
+## Example Followup Request
+
+```{.bash code-line-numbers="|9|10"}
+curl https://api.openai.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d '{
+    "model": "gpt-4.1",
+    "messages": [
+      {"role": "system", "content": "You are a terse assistant."},
+      {"role": "user", "content": "What is the capital of the moon?"},
+      {"role": "assistant", "content": "The moon does not have a capital. It is not inhabited or governed."},
+      {"role": "user", "content": "Are you sure?"}
+    ]
+}'
+```
+
+- The entire history is re-passed into the request
+
+## Example Followup Response
+
+Abridged Response:
+
+```{.json code-line-numbers="|3-6|10-12"}
+{
+  "choices": [{
+    "message": {
+      "role": "assistant",
+      "content": "Yes, I am sure. The moon has no capital or formal governance."
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 52,
+    "completion_tokens": 15,
+    "total_tokens": 67,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  }
+}
+```
+
+. . .
+
+Previous usage:
+
+```{.json code-line-numbers="2-4"}
+  "usage": {
+    "prompt_tokens": 9,
+    "completion_tokens": 12,
+    "total_tokens": 21,
+```
+
+
+## Tokens
+
+- Fundamental units of information for LLMs
+- Words, parts of words, or individual characters
+
+- Important for:
+  - Model input/output limits
+  - API pricing is usually by token
+    - <https://gptforwork.com/tools/openai-chatgpt-api-pricing-calculator>
+
+
+Try it yourself:
+
+- <https://tiktokenizer.vercel.app/>
+- <https://platform.openai.com/tokenizer>
+
+## Token example
+
+Common words represented with a single number:
+
+:::{.incremental}
+- What is the capital of the moon?
+- 4827, 382, 290, 9029, 328, 290, 28479, 30
+- 8 tokens total (including punctuation)
+:::
+
+. . .
+
+Other words may require multiple numbers
+
+:::{.incremental}
+- counterrevolutionary
+- counter, re, volution, ary
+- 32128, 264, 9477, 815
+- 4 tokens total
+:::
+
+## Token pricing (Anthropic)
+
+<https://www.anthropic.com/pricing> -> API tab
+
+::: {.columns}
+::: {.column width="60%"}
+![](/img/anthropic-pricing.png)
+:::
+::: {.column width="40%"}
+Claude Sonnet 4
+
+- Input: $3 / million tokens
+- Output: $15 / million tokens
+- Context window: 200k
+:::
+:::
+
+## Context window
+
+- Determines how much input can be incorporated into each output
+- How much of the current history the agent has in the response
+
+For Claude Sonnet:
+
+- 200k token context window
+- 150,000 words / 300 - 600 pages / 1.5 - 2 novels
+- "Gödel, Escher, Bach" ~ 67,755 words
+
+## Context window - chat history
+
+200k tokens *seems* like a lot of context...
+
+. . .
+
+... but the entire chat is passed along each chat iteration
+
+```json
+{"role": "system", "content": "You are a terse assistant."},
+{"role": "user", "content": "What is the capital of the moon?"},
+{"role": "assistant", "content": "The moon does not have a capital. It is not inhabited or governed."},
+{"role": "user", "content": "Are you sure?"},
+{"role": "assistant", "content": "Yes, I am sure. The moon has no capital or formal governance."}
+```
+
+## Summary
+
+- A message is an object with:
+  - role (e.g., “system”, “user”, “assistant”)
+  - content string
+- A chat conversation is a growing list of messages
+- The OpenAI chat API is a stateless HTTP endpoint: takes a list of messages as input, returns a new message as output

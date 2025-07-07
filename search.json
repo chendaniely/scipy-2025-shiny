@@ -1,5 +1,166 @@
 [
   {
+    "objectID": "slides/04-modles_test_qa/02-testing.html#testing",
+    "href": "slides/04-modles_test_qa/02-testing.html#testing",
+    "title": "Testing",
+    "section": "Testing",
+    "text": "Testing\n\nHave the computer make the checks you may be doing visually\nHave the checks done in code"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/02-testing.html#testing-shiny",
+    "href": "slides/04-modles_test_qa/02-testing.html#testing-shiny",
+    "title": "Testing",
+    "section": "Testing Shiny",
+    "text": "Testing Shiny\n\nTesting is always great (nothing new here)\nPlaywright is the more modern way to test web apps\n\nCompared to Selenium…\n\nShiny makes playwright easier to code against"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/02-testing.html#pytest-example",
+    "href": "slides/04-modles_test_qa/02-testing.html#pytest-example",
+    "title": "Testing",
+    "section": "Pytest Example",
+    "text": "Pytest Example\nimport pandas as pd\n\nidx1 = pd.Index([1, 2, 3, 4, 5])\nidx2 = pd.Index([2, 3, 4, 5, 6])\nidx3 = pd.Index([3, 4, 5, 6, 7])\ndefault = pd.Index([1, 2, 3, 4, 5, 6, 7])\n\ndef test_index_intersection_all():\n    to_intersect = [idx1, idx2, idx3]\n    expected = pd.Index([3, 4, 5])\n    calculated = index_intersection_all(\n        to_intersect,\n        default=default,\n    )\n    assert (calculated == expected).all()\n    assert calculated.equals(expected)"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/02-testing.html#playwright-example",
+    "href": "slides/04-modles_test_qa/02-testing.html#playwright-example",
+    "title": "Testing",
+    "section": "Playwright Example",
+    "text": "Playwright Example\nfrom shiny.playwright import controller\nfrom shiny.run import ShinyAppProc\nfrom playwright.sync_api import Page\nfrom shiny.pytest import create_app_fixture\n\napp = create_app_fixture(\"app.py\")\n\n# TODO: make new example with app\ndef test_basic_app(page: Page, app: ShinyAppProc):\n    page.goto(app.url)\n\n    selectize_day = controller.InputSelectize(page, \"adaptive-filter_day\")\n    selectize_day.set(\"Fri\")\n    selectize_day.expect_selected([\"Fri\"])\n\n    selectize_time = controller.InputSelectize(page, \"adaptive-filter_time\")\n    selectize_time.expect_choices([\"Dinner\"])"
+  },
+  {
+    "objectID": "slides/03-llm/05-tools.html#what-is-tool-calling",
+    "href": "slides/03-llm/05-tools.html#what-is-tool-calling",
+    "title": "Tool Calling",
+    "section": "What is Tool Calling?",
+    "text": "What is Tool Calling?\n\nAllows LLMs to interact with other systems\nSupported by most of the newest LLMs, but not all\nSounds complicated? Scary? It’s not too bad, actually…\n\nReference: https://jcheng5.github.io/llm-quickstart/quickstart.html#/how-it-works"
+  },
+  {
+    "objectID": "slides/03-llm/05-tools.html#how-it-does-not-work",
+    "href": "slides/03-llm/05-tools.html#how-it-does-not-work",
+    "title": "Tool Calling",
+    "section": "How it does NOT work",
+    "text": "How it does NOT work"
+  },
+  {
+    "objectID": "slides/03-llm/05-tools.html#how-it-does-work",
+    "href": "slides/03-llm/05-tools.html#how-it-does-work",
+    "title": "Tool Calling",
+    "section": "How it DOES work",
+    "text": "How it DOES work"
+  },
+  {
+    "objectID": "slides/03-llm/05-tools.html#demo-weather-r",
+    "href": "slides/03-llm/05-tools.html#demo-weather-r",
+    "title": "Tool Calling",
+    "section": "Demo: Weather R",
+    "text": "Demo: Weather R\nlibrary(httr)\nlibrary(ellmer)\nlibrary(dotenv)\n\n# Load environment variables\nload_dot_env()\n\n# Define weather function\nget_weather &lt;- function(latitude, longitude) {\n  base_url &lt;- \"https://api.open-meteo.com/v1/forecast\"\n\n  tryCatch(\n    {\n      response &lt;- GET(\n        base_url,\n        query = list(\n          latitude = latitude,\n          longitude = longitude,\n          current = \"temperature_2m,wind_speed_10m,relative_humidity_2m\"\n        )\n      )\n      rawToChar(response$content)\n    },\n    error = function(e) {\n      paste(\"Error fetching weather data:\", e$message)\n    }\n  )\n}\n\n# Create chat instance\nchat &lt;- chat_openai(\n  model = \"gpt-4.1\",\n  system_prompt = \"You are a helpful assistant that can check the weather. Report results in imperial units.\"\n)\n\n# Register the weather tool\n#\n# Created using `ellmer::create_tool_def(get_weather)`\nchat$register_tool(tool(\n  get_weather,\n  \"Fetches weather information for a specified location given by latitude and\nlongitude.\",\n  latitude = type_number(\n    \"The latitude of the location for which weather information is requested.\"\n  ),\n  longitude = type_number(\n    \"The longitude of the location for which weather information is requested.\"\n  )\n))\n\n# Test the chat\nchat$chat(\"What is the weather in Seattle?\")"
+  },
+  {
+    "objectID": "slides/03-llm/05-tools.html#demo-weather-python",
+    "href": "slides/03-llm/05-tools.html#demo-weather-python",
+    "title": "Tool Calling",
+    "section": "Demo: Weather Python",
+    "text": "Demo: Weather Python\nimport requests\nfrom chatlas import ChatAnthropic\nfrom dotenv import load_dotenv\n\nload_dotenv()  # Loads OPENAI_API_KEY from the .env file\n\n# Define a simple tool for getting the current weather\ndef get_weather(latitude: float, longitude: float):\n    \"\"\"\n    Get the current weather for a location using latitude and longitude.\n    \"\"\"\n    base_url = \"https://api.open-meteo.com/v1/forecast\"\n    params = {\n        \"latitude\": latitude,\n        \"longitude\": longitude,\n        \"current\": \"temperature_2m,wind_speed_10m,relative_humidity_2m\",\n    }\n\n    try:\n        response = requests.get(base_url, params=params)\n        response.raise_for_status()  # Raise an exception for bad status codes\n        return response.text\n    except requests.RequestException as e:\n        return f\"Error fetching weather data: {str(e)}\"\n\n\nchat = ChatAnthropic(\n    model=\"claude-3-5-sonnet-latest\",\n    system_prompt=(\n        \"You are a helpful assistant that can check the weather. \"\n        \"Report results in imperial units.\"\n    ),\n)\n\nchat.register_tool(get_weather)\nchat.chat(\"What is the weather in Seattle?\")"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#working-with-an-llm",
+    "href": "slides/03-llm/03-first.html#working-with-an-llm",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "Working with an LLM",
+    "text": "Working with an LLM\nMany different chat providers\n\nOpenAI ChatGPT\nAnthropic Claude\nGoogle Gemini\nxAI Grok\nMeta Llama\n\netc…"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#demo-openai-chatgpt",
+    "href": "slides/03-llm/03-first.html#demo-openai-chatgpt",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "Demo: OpenAI ChatGPT",
+    "text": "Demo: OpenAI ChatGPT\nfrom pprint import pprint\n\nfrom dotenv import load_dotenv\nfrom openai import OpenAI\n\nload_dotenv()  # Loads OPENAI_API_KEY from the .env file\n\n# Creates an OpenAI client, which can be used to access any OpenAI service\n# (including Whisper and DALL-E, not just chat models). It's totally stateless.\nclient = OpenAI()\n\n# The initial set of messages we'll start the conversation with: a system\n# prompt and a user prompt.\nmessages = [\n    {\"role\": \"system\", \"content\": \"You are a terse assistant.\"},\n    {\"role\": \"user\", \"content\": \"What is the capital of the moon?\"},\n]\n\n# Call out to the OpenAI API to generate a response. (This is a blocking call,\n# but there are ways to do async, streaming, and async streaming as well.)\nresponse = client.chat.completions.create(\n    model=\"gpt-4.1\",\n    messages=messages,\n)\n\n# Print the response we just received.\nprint(response.choices[0].message.content)\n# If you want to inspect the full response, you can do so by uncommenting the\n# following line. The .dict() is helpful in getting more readable output.\n# pprint(response.dict())\n\n# The client.chat.completions.create() call is stateless. In order to carry on a\n# multi-turn conversation, we need to keep track of the messages we've sent and\n# received.\nmessages.append(response.choices[0].message)\n\n# Ask a followup question.\nmessages.append({\"role\": \"user\", \"content\": \"Are you sure?\"})\nresponse2 = client.chat.completions.create(\n    model=\"gpt-4.1\",\n    messages=messages,\n    stream=True,\n)\n\nfor chunk in response2:\n    print(chunk.choices[0].delta.content or \"\", end=\"\", flush=True)\nprint()"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#github-models",
+    "href": "slides/03-llm/03-first.html#github-models",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "GitHub Models",
+    "text": "GitHub Models\nGitHub Models: https://github.com/marketplace/models\n\n\n\n\n\nFree tiers of all the latest models\nPlayground to tinker with them\n\n\nhttps://docs.github.com/en/github-models/use-github-models/prototyping-with-ai-models#rate-limits"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#your-turn-openai-github",
+    "href": "slides/03-llm/03-first.html#your-turn-openai-github",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "Your turn: OpenAI / GitHub",
+    "text": "Your turn: OpenAI / GitHub\n\n  \n    −\n    +\n \n 05:00\n \n\n\n\n\n\n\nNote\n\n\nMake sure you have created a GitHub PAT (you do not need any specific context)\n\n\n\nimport os\nfrom pprint import pprint\n\nfrom dotenv import load_dotenv\nfrom openai import OpenAI\n\nload_dotenv()\n\n# arguments passed switch to using GitHub models\nclient = OpenAI(\n  api_key=os.environ[\"GITHUB_TOKEN\"],\n  base_url=\"https://models.inference.ai.azure.com\"\n)\n\nmessages = [\n    {\"role\": \"system\", \"content\": \"You are a terse assistant.\"},\n    {\"role\": \"user\", \"content\": \"What is the capital of the moon?\"},\n]\n\nresponse = client.chat.completions.create(\n    model=\"gpt-4.1\",\n    messages=messages,\n)\nprint(response.choices[0].message.content)\n\nmessages.append(response.choices[0].message)\n\nmessages.append({\"role\": \"user\", \"content\": \"Are you sure?\"})\nresponse2 = client.chat.completions.create(\n    model=\"gpt-4.1\",\n    messages=messages,\n    stream=True,\n)\n\nfor chunk in response2:\n    print(chunk.choices[0].delta.content or \"\", end=\"\", flush=True)\nprint()"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#educator-developer-blog",
+    "href": "slides/03-llm/03-first.html#educator-developer-blog",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "Educator Developer Blog",
+    "text": "Educator Developer Blog\nHow to use any Python AI agent framework with free GitHub Models"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#chatlas-ellmer",
+    "href": "slides/03-llm/03-first.html#chatlas-ellmer",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "Chatlas + Ellmer",
+    "text": "Chatlas + Ellmer\nUnify the prompt creation process and steps\n\n\nPython\n\nhttps://posit-dev.github.io/chatlas/\n\nR\n\nhttps://ellmer.tidyverse.org/"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#demo-chatlas-ellmer-openai",
+    "href": "slides/03-llm/03-first.html#demo-chatlas-ellmer-openai",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "Demo: Chatlas + Ellmer (OpenAI)",
+    "text": "Demo: Chatlas + Ellmer (OpenAI)\nPython Chatlas\nfrom chatlas import ChatOpenAI\nfrom dotenv import load_dotenv\n\nload_dotenv()  # Loads OPENAI_API_KEY from the .env file\n\nchat = ChatOpenAI(model=\"gpt-4.1\", system_prompt=\"You are a terse assistant.\")\n\nchat.chat(\"What is the capital of the moon?\")\n\nchat.chat(\"Are you sure?\")"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#demo-chatlas-ellmer-claude",
+    "href": "slides/03-llm/03-first.html#demo-chatlas-ellmer-claude",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "Demo: Chatlas + Ellmer (Claude)",
+    "text": "Demo: Chatlas + Ellmer (Claude)\nPython Chatlas\nfrom chatlas import ChatAnthropic\nfrom dotenv import load_dotenv\n\nload_dotenv()\n\nchat = ChatAnthropic(model=\"claude-3-7-sonnet-latest\", system_prompt=\"You are a terse assistant.\")\n\nchat.chat(\"What is the capital of the moon?\")\n\nchat.chat(\"Are you sure?\")"
+  },
+  {
+    "objectID": "slides/03-llm/03-first.html#your-turn-chatlas-ellmer-github",
+    "href": "slides/03-llm/03-first.html#your-turn-chatlas-ellmer-github",
+    "title": "Your first chat with an LLM 🗣️🤖",
+    "section": "Your turn: Chatlas Ellmer GitHub",
+    "text": "Your turn: Chatlas Ellmer GitHub\n\n  \n    −\n    +\n \n 10:00\n \nPython Chatlas\nimport os\n\nfrom chatlas import ChatGithub\nfrom dotenv import load_dotenv\n\nload_dotenv()\n\nchat = ChatGithub(\n    model=\"gpt-4.1\",\n    system_prompt=\"You are a terse assistant.\",\n    api_key=os.getenv(\"GITHUB_PAT\"),\n)\n\nchat.chat(\"What is the capital of the moon?\")\nchat.chat(\"Are you sure?\")"
+  },
+  {
+    "objectID": "slides/03-llm/01-welcome.html#passing-along-what-i-learned",
+    "href": "slides/03-llm/01-welcome.html#passing-along-what-i-learned",
+    "title": "Introduction to LLMs",
+    "section": "Passing along what I learned",
+    "text": "Passing along what I learned\n\nJoe will do a better job than I can, but I can demo you code today.\nhttps://www.youtube.com/watch?v=owDd1CJ17uQ"
+  },
+  {
+    "objectID": "slides/03-llm/01-welcome.html#poll-experience-with-llms",
+    "href": "slides/03-llm/01-welcome.html#poll-experience-with-llms",
+    "title": "Introduction to LLMs",
+    "section": "Poll: Experience with LLMs",
+    "text": "Poll: Experience with LLMs\n\nUsed an LLM before (ChatGPT/Claude/Ollama desktop/web application)?\nSkeptical about LLMs/AI (1-2 out of 5)? Why?\nNeutral about LLMs/AI (3 out of 5)? Why?\nEnthusiastic about LLMs/AI (4-5 out of 5)? Why?"
+  },
+  {
+    "objectID": "slides/03-llm/01-welcome.html#today",
+    "href": "slides/03-llm/01-welcome.html#today",
+    "title": "Introduction to LLMs",
+    "section": "Today",
+    "text": "Today\n\nToday, we will treat LLMs as black boxes\nPractical introduction\nGet some hands on practice to demystify using them"
+  },
+  {
+    "objectID": "slides/03-llm/01-welcome.html#goal",
+    "href": "slides/03-llm/01-welcome.html#goal",
+    "title": "Introduction to LLMs",
+    "section": "Goal",
+    "text": "Goal\nQuick Start on LLMs. You will leave having used a Chat API in a shiny app."
+  },
+  {
+    "objectID": "slides/03-llm/01-welcome.html#security",
+    "href": "slides/03-llm/01-welcome.html#security",
+    "title": "Introduction to LLMs",
+    "section": "Security",
+    "text": "Security\n\nDO NOT send proprietary code or data to any LLM, unless you are sure IT policies allow it\nLocal models (e.g., Ollama) typically perform worse than frontier models"
+  },
+  {
     "objectID": "slides/02-app/01-reactivity.html#previous-pydata-shiny-talks",
     "href": "slides/02-app/01-reactivity.html#previous-pydata-shiny-talks",
     "title": "What is Reactivity?",
@@ -350,27 +511,63 @@
     "text": "Check your installation\n\nClone / download this repository: https://github.com/chendaniely/scipy-2025-shiny\nActivate the Python environment with the packages you just installed\nRun the test-install.py app and script with: shiny run test-install.py\n\nYou should see output like this\n$ shiny run test-install.py\nINFO:     Started server process [46615]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)"
   },
   {
-    "objectID": "02-01-reactivity.html",
-    "href": "02-01-reactivity.html",
-    "title": "Reactivity",
+    "objectID": "04-02-testing.html",
+    "href": "04-02-testing.html",
+    "title": "Testing",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Modules and Testing",
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "03-04-chatbot.html",
+    "href": "03-04-chatbot.html",
+    "title": "Chatbot UI",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Working with LLMs",
+      "Chatbot UI"
+    ]
+  },
+  {
+    "objectID": "03-02-anatomy.html",
+    "href": "03-02-anatomy.html",
+    "title": "Anatomy of a chat",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Working with LLMs",
+      "Anatomy of a chat"
+    ]
+  },
+  {
+    "objectID": "02-02-dashboard.html",
+    "href": "02-02-dashboard.html",
+    "title": "Dashboard",
     "section": "",
     "text": "View slides in full screen",
     "crumbs": [
       "Setup",
       "Building a Shiny Application",
-      "Reactivity"
+      "Dashboard"
     ]
   },
   {
-    "objectID": "01-02-intro-shiny.html",
-    "href": "01-02-intro-shiny.html",
-    "title": "Shiny introduction",
+    "objectID": "01-03-first-app.html",
+    "href": "01-03-first-app.html",
+    "title": "Your first application",
     "section": "",
     "text": "View slides in full screen",
     "crumbs": [
       "Setup",
       "Introduction",
-      "Shiny introduction"
+      "Your first application"
     ]
   },
   {
@@ -386,15 +583,63 @@
     ]
   },
   {
-    "objectID": "01-03-first-app.html",
-    "href": "01-03-first-app.html",
-    "title": "Your first application",
+    "objectID": "01-02-intro-shiny.html",
+    "href": "01-02-intro-shiny.html",
+    "title": "Shiny introduction",
     "section": "",
     "text": "View slides in full screen",
     "crumbs": [
       "Setup",
       "Introduction",
-      "Your first application"
+      "Shiny introduction"
+    ]
+  },
+  {
+    "objectID": "02-01-reactivity.html",
+    "href": "02-01-reactivity.html",
+    "title": "Reactivity",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Building a Shiny Application",
+      "Reactivity"
+    ]
+  },
+  {
+    "objectID": "03-01-welcome.html",
+    "href": "03-01-welcome.html",
+    "title": "Welcome to LLMs",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Working with LLMs",
+      "Welcome to LLMs"
+    ]
+  },
+  {
+    "objectID": "03-03-first.html",
+    "href": "03-03-first.html",
+    "title": "Your first chat",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Working with LLMs",
+      "Your first chat"
+    ]
+  },
+  {
+    "objectID": "04-01-modules.html",
+    "href": "04-01-modules.html",
+    "title": "Modules",
+    "section": "",
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Modules and Testing",
+      "Modules"
     ]
   },
   {
@@ -571,5 +816,432 @@
     "title": "Your first application",
     "section": "Your first application",
     "text": "Your first application\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| components: [editor, viewer]\n#| layout: horizontal\n#| viewerHeight: 500\n\nfrom palmerpenguins import load_penguins\nfrom plotnine import aes, geom_histogram, ggplot, theme_minimal\nfrom shiny.express import input, render, ui\n\ndat = load_penguins()\nspecies = dat[\"species\"].unique().tolist()\n\nui.input_radio_buttons(\"species\", \"Species\", species, inline=True)\n\n\n@render.plot\ndef plot():\n    sel = dat[dat[\"species\"] == input.species()]\n    return (\n        ggplot(aes(x=\"bill_length_mm\"))\n        + geom_histogram(dat, fill=\"#C2C2C4\", binwidth=1)\n        + geom_histogram(sel, fill=\"#447099\", binwidth=1)\n        + theme_minimal()\n    )\n\n  \n    −\n    +\n \n 05:00"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#what-do-you-see",
+    "href": "slides/02-app/02-dashboard.html#what-do-you-see",
+    "title": "Build a dashboard",
+    "section": "What do you see?",
+    "text": "What do you see?"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#restaurant-tipping-dashboard",
+    "href": "slides/02-app/02-dashboard.html#restaurant-tipping-dashboard",
+    "title": "Build a dashboard",
+    "section": "Restaurant Tipping dashboard",
+    "text": "Restaurant Tipping dashboard\n\nTitle: “Restaurant tipping”\n\nYou can use the ui.page_opts() and pass in a title='' parameter\n\nSidebar for a few input components (we’ll add those later)\n\nYou can put some text here as a place holder, e.g., \"sidebar inputs\"\n\nA full width column with 3 value boxes\n\nEach value box will take up the same width of space\nThe value boxes will have separate labels and corresponding summary statistic\n\nA full width column with 2 cards, one for a dataframe and another for a scatter plot\n\nEach card will share the same width of space\n\nA full width column with 1 card"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#your-turn-app-ui-components",
+    "href": "slides/02-app/02-dashboard.html#your-turn-app-ui-components",
+    "title": "Build a dashboard",
+    "section": "Your turn: App UI components",
+    "text": "Your turn: App UI components\n\n  \n    −\n    +\n \n 05:00\n \nHere are the documentation pages for functions that may be useful for this exercise:\n\nui.page_opts(): https://shiny.posit.co/py/api/express/express.ui.page_opts.html\nui.sidebar(): https://shiny.posit.co/py/api/express/express.ui.sidebar.html\nui.layout_columns(): https://shiny.posit.co/py/api/express/express.ui.layout_columns.html\nui.card(): https://shiny.posit.co/py/api/express/express.ui.card.html\nui.card_header(): https://shiny.posit.co/py/api/express/express.ui.card_header.html"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#app-ui",
+    "href": "slides/02-app/02-dashboard.html#app-ui",
+    "title": "Build a dashboard",
+    "section": "App UI",
+    "text": "App UI\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| #| components: [editor, viewer]\n#| layout: horizontal\n#| viewerHeight: 500\n\nfrom shiny.express import input, ui\n# title\nui.page_opts(title=\"Restaurant tipping\", fillable=True)\n# sidebar (empty for now)\nwith ui.sidebar(open=\"desktop\"):\n    \"sidebar inputs\"\n# body of application\n# first row of value boxes\nwith ui.layout_columns(fill=False):\n    with ui.value_box():\n        \"Total tippers\"\n        \"Value 1\"\n    with ui.value_box():\n        \"Average tip\"\n        \"Value 2\"\n    with ui.value_box():\n        \"Average bill\"\n        \"Value 3\"\n# second row of cards\nwith ui.layout_columns(col_widths=[6, 6]):\n    with ui.card(full_screen=True):\n        ui.card_header(\"Tips data\")\n    with ui.card(full_screen=True):\n        ui.card_header(\"Total bill vs tip\")\nwith ui.layout_columns():\n    with ui.card(full_screen=True):\n        ui.card_header(\"Tip percentages\")"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#your-turn-add-input-components",
+    "href": "slides/02-app/02-dashboard.html#your-turn-add-input-components",
+    "title": "Build a dashboard",
+    "section": "Your turn: Add input components",
+    "text": "Your turn: Add input components\n\n  \n    −\n    +\n \n 02:00\n \n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| #| components: [editor, viewer]\n#| layout: horizontal\n#| viewerHeight: 500\n\nfrom shiny.express import input, ui\n# title\nui.page_opts(title=\"Restaurant tipping\", fillable=True)\n# sidebar\nwith ui.sidebar(open=\"desktop\"):\n    ui.input_slider(\n        id=\"slider\",\n        label=\"Bill amount\",\n        min=0,\n        max=100,\n        value=[0, 100],\n    )\n    ui.input_checkbox_group(\n        id=\"checkbox_group\",\n        label=\"Food service\",\n        choices={\n            \"Lunch\": \"Lunch\",\n            \"Dinner\": \"Dinner\",\n        },\n        selected=[\n            \"Lunch\",\n            \"Dinner\",\n        ],\n    )\n    ui.input_action_button(\"action_button\", \"Reset filter\")\n# body of application\n# first row of value boxes\nwith ui.layout_columns(fill=False):\n    with ui.value_box():\n        \"Total tippers\"\n        \"Value 1\"\n    with ui.value_box():\n        \"Average tip\"\n        \"Value 2\"\n    with ui.value_box():\n        \"Average bill\"\n        \"Value 3\"\n# second row of cards\nwith ui.layout_columns(col_widths=[6, 6]):\n    with ui.card(full_screen=True):\n        ui.card_header(\"Tips data\")\n        \"Tips DataFrame\"\n    with ui.card(full_screen=True):\n        ui.card_header(\"Total bill vs tip\")\n        \"Scatterplot\"\nwith ui.layout_columns():\n    with ui.card(full_screen=True):\n        ui.card_header(\"Tip percentages\")\n        \"ridgeplot\""
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#lets-add-some-data",
+    "href": "slides/02-app/02-dashboard.html#lets-add-some-data",
+    "title": "Build a dashboard",
+    "section": "Let’s add some data",
+    "text": "Let’s add some data\n\nimport seaborn as sns\n\ntips = sns.load_dataset('tips')\n\ntotal_lower = tips.total_bill.min()\ntotal_upper = tips.total_bill.max()\ntime_selected = tips.time.unique().tolist()\n\nidx1 = tips.total_bill.between(\n    left=total_lower,\n    right=total_upper,\n    inclusive=\"both\",\n)\n\nidx2 = tips.time.isin(time_selected)\n\ntips_filtered = tips[idx1 & idx2]"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#calculate-values",
+    "href": "slides/02-app/02-dashboard.html#calculate-values",
+    "title": "Build a dashboard",
+    "section": "Calculate values",
+    "text": "Calculate values\n\n# total tippers\ntotal_tippers = tips_filtered.shape[0]\nprint(total_tippers)\n\n# average tip\nperc = tips_filtered.tip / tips_filtered.total_bill\naverage_tip = f\"{perc.mean():.1%}\"\nprint(average_tip)\n\n# average bill\nbill = tips_filtered.total_bill.mean()\naverage_bill = f\"${bill:.2f}\"\nprint(average_bill)\n\n244\n16.1%\n$19.79"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#scatterplot",
+    "href": "slides/02-app/02-dashboard.html#scatterplot",
+    "title": "Build a dashboard",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nimport plotly.express as px\n\npx.scatter(\n    tips_filtered,\n    x=\"total_bill\",\n    y=\"tip\",\n    trendline=\"lowess\"\n)"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#ridgeplot",
+    "href": "slides/02-app/02-dashboard.html#ridgeplot",
+    "title": "Build a dashboard",
+    "section": "Ridgeplot",
+    "text": "Ridgeplot\n\nfrom ridgeplot import ridgeplot\n\ntips_filtered[\"percent\"] = tips_filtered.tip / tips_filtered.total_bill\n\nuvals = tips_filtered.day.unique()\nsamples = [[tips_filtered.percent[tips_filtered.day == val]] for val in uvals]\n\nplt = ridgeplot(\n    samples=samples,\n    labels=uvals,\n    bandwidth=0.01,\n    colorscale=\"viridis\",\n    colormode=\"row-index\"\n)\n\nplt.update_layout(\n    legend=dict(\n        orientation=\"h\",\n        yanchor=\"bottom\",\n        y=1.02,\n        xanchor=\"center\",\n        x=0.5\n    )\n)"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#add-reactive-values-to-the-cards",
+    "href": "slides/02-app/02-dashboard.html#add-reactive-values-to-the-cards",
+    "title": "Build a dashboard",
+    "section": "Add reactive values to the cards",
+    "text": "Add reactive values to the cards\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| components: [editor, viewer]\n#| layout: horizontal\n#| viewerHeight: 500\n\nimport pandas as pd\nimport seaborn as sns\nfrom shiny.express import input, render, ui\n\n\ntips = sns.load_dataset(\"tips\")\n\n# title\nui.page_opts(title=\"Restaurant tipping\", fillable=True)\n\n# sidebar\nwith ui.sidebar(open=\"desktop\"):\n    ui.input_slider(\n        id=\"slider\",\n        label=\"Bill amount\",\n        min=tips.total_bill.min(),\n        max=tips.total_bill.max(),\n        value=[tips.total_bill.min(), tips.total_bill.max()])\n    ui.input_checkbox_group(\n        id=\"checkbox_group\",\n        label=\"Food service\",\n        choices={\n            \"Lunch\": \"Lunch\",\n            \"Dinner\": \"Dinner\",\n        },\n        selected=[\n            \"Lunch\",\n            \"Dinner\",\n        ],\n    )\n    ui.input_action_button(\"action_button\", \"Reset filter\")\n\n\n# body of application\n\n# first row of value boxes\nwith ui.layout_columns(fill=False):\n    with ui.value_box():\n        \"Total tippers\"\n        @render.express\n        def total_tippers():\n            idx1 = tips.total_bill.between(\n                left=input.slider()[0],\n                right=input.slider()[1],\n                inclusive=\"both\",\n            )\n            idx2 = tips.time.isin(input.checkbox_group())\n            tips_filtered = tips[idx1 & idx2]\n\n            tips_filtered.shape[0]\n\n    with ui.value_box():\n        \"Average tip\"\n        @render.express\n        def average_tip():\n            idx1 = tips.total_bill.between(\n                left=input.slider()[0],\n                right=input.slider()[1],\n                inclusive=\"both\",\n            )\n            idx2 = tips.time.isin(input.checkbox_group())\n            tips_filtered = tips[idx1 & idx2]\n\n            perc = tips_filtered.tip / tips_filtered.total_bill\n            f\"{perc.mean():.1%}\"\n\n    with ui.value_box():\n        \"Average bill\"\n        @render.express\n        def average_bill():\n            idx1 = tips.total_bill.between(\n                left=input.slider()[0],\n                right=input.slider()[1],\n                inclusive=\"both\",\n            )\n            idx2 = tips.time.isin(input.checkbox_group())\n            tips_filtered = tips[idx1 & idx2]\n\n            bill = tips_filtered.total_bill.mean()\n            f\"${bill:.2f}\""
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#repeated-reactive-calculations",
+    "href": "slides/02-app/02-dashboard.html#repeated-reactive-calculations",
+    "title": "Build a dashboard",
+    "section": "Repeated reactive calculations",
+    "text": "Repeated reactive calculations\nLots of repeated calculations\nidx1 = tips.total_bill.between(\n    left=input.slider()[0],\n    right=input.slider()[1],\n    inclusive=\"both\",\n)\nidx2 = tips.time.isin(input.checkbox_group())\ntips_filtered = tips[idx1 & idx2]"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#shiny-reactive-calculations",
+    "href": "slides/02-app/02-dashboard.html#shiny-reactive-calculations",
+    "title": "Build a dashboard",
+    "section": "Shiny reactive calculations",
+    "text": "Shiny reactive calculations\nWe can use a @reactive.calc to define and save a value that reacts to inputs\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| components: [editor, viewer]\n#| layout: horizontal\n#| viewerHeight: 500\nfrom shiny import reactive\nfrom shiny.express import input, render, ui\n\nui.input_slider(\"x\", \"Slider value\", min=0, max=100, value=10)\n\n# we need to make a calculation from an input value\n@render.text\ndef x_squared_text():\n    return f\"Squared value: {input.x() ** 2}\"\n\n# we can save this calculation to be used later\n@reactive.calc\ndef x_squared():\n    return input.x() ** 2\n\n# we can use that saved calculation\n@render.text\ndef x_squared_calc_text():\n    return f\"Saved squared: {x_squared()}\""
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#reuse-reactive-calculations",
+    "href": "slides/02-app/02-dashboard.html#reuse-reactive-calculations",
+    "title": "Build a dashboard",
+    "section": "Reuse reactive calculations",
+    "text": "Reuse reactive calculations\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| components: [editor, viewer]\n#| layout: horizontal\n#| viewerHeight: 500\nfrom shiny import reactive\nfrom shiny.express import input, render, ui\n\nui.input_slider(\"x\", \"Slider value\", min=0, max=100, value=10)\n\n# we need to make a calculation from an input value\n@render.text\ndef x_squared_text():\n    return f\"Squared value: {input.x() ** 2}\"\n\n# we can save this calculation to be used later\n@reactive.calc\ndef x_squared():\n    return input.x() ** 2\n\n# we can use that saved calculation\n@render.text\ndef x_squared_calc_text():\n    return f\"Saved squared: {x_squared()}\"\n\n# we can build on top of that saved calculation\n@render.text\ndef x_squared_half_calc_text():\n    return f\"Build on squared value: {x_squared() / 2}\"\n\n# we don't need to re-calculate everything from the input again\n@render.text\ndef x_squared_half_text():\n    return f\"Recalculate from input: {input.x() ** 2 / 2}\""
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#your-turn-filtered-tips-reactive.calc",
+    "href": "slides/02-app/02-dashboard.html#your-turn-filtered-tips-reactive.calc",
+    "title": "Build a dashboard",
+    "section": "Your turn: Filtered tips reactive.calc",
+    "text": "Your turn: Filtered tips reactive.calc\n\n  \n    −\n    +\n \n 05:00\n \n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| components: [editor, viewer]\n#| layout: horizontal\n#| viewerHeight: 500\n\nimport pandas as pd\nimport seaborn as sns\nfrom shiny.express import input, render, ui\n\n\ntips = sns.load_dataset(\"tips\")\n\n# title\nui.page_opts(title=\"Restaurant tipping\", fillable=True)\n\n# sidebar\nwith ui.sidebar(open=\"desktop\"):\n    ui.input_slider(\n        id=\"slider\",\n        label=\"Bill amount\",\n        min=tips.total_bill.min(),\n        max=tips.total_bill.max(),\n        value=[tips.total_bill.min(), tips.total_bill.max()])\n    ui.input_checkbox_group(\n        id=\"checkbox_group\",\n        label=\"Food service\",\n        choices={\n            \"Lunch\": \"Lunch\",\n            \"Dinner\": \"Dinner\",\n        },\n        selected=[\n            \"Lunch\",\n            \"Dinner\",\n        ],\n    )\n    ui.input_action_button(\"action_button\", \"Reset filter\")\n\n\n# body of application\n\n# first row of value boxes\nwith ui.layout_columns(fill=False):\n    with ui.value_box():\n        \"Total tippers\"\n        @render.express\n        def total_tippers():\n            idx1 = tips.total_bill.between(\n                left=input.slider()[0],\n                right=input.slider()[1],\n                inclusive=\"both\",\n            )\n            idx2 = tips.time.isin(input.checkbox_group())\n            tips_filtered = tips[idx1 & idx2]\n\n            tips_filtered.shape[0]"
+  },
+  {
+    "objectID": "slides/02-app/02-dashboard.html#finish-the-application",
+    "href": "slides/02-app/02-dashboard.html#finish-the-application",
+    "title": "Build a dashboard",
+    "section": "Finish the application",
+    "text": "Finish the application"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#llm-conversations-are-http-requests",
+    "href": "slides/03-llm/02-anatomy.html#llm-conversations-are-http-requests",
+    "title": "Anatomy of a Conversation",
+    "section": "LLM Conversations are HTTP Requests",
+    "text": "LLM Conversations are HTTP Requests\n\nEach interaction is a separate HTTP API request\nThe API server is entirely stateless (despite conversations being inherently stateful!)"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#example-conversation",
+    "href": "slides/03-llm/02-anatomy.html#example-conversation",
+    "title": "Anatomy of a Conversation",
+    "section": "Example Conversation",
+    "text": "Example Conversation\n\n“What’s the capital of the moon?”\n\n\n\"There isn't one.\"\n\n\n\n“Are you sure?”\n\n\n\n\"Yes, I am sure.\""
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#example-request",
+    "href": "slides/03-llm/02-anatomy.html#example-request",
+    "title": "Anatomy of a Conversation",
+    "section": "Example Request",
+    "text": "Example Request\ncurl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"gpt-4.1\",\n    \"messages\": [\n        {\"role\": \"system\", \"content\": \"You are a terse assistant.\"},\n        {\"role\": \"user\", \"content\": \"What is the capital of the moon?\"}\n    ]\n}'\n\nModel: model used\nSystem prompt: behind-the-scenes instructions and information for the model\nUser prompt: a question or statement for the model to respond to"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#example-response",
+    "href": "slides/03-llm/02-anatomy.html#example-response",
+    "title": "Anatomy of a Conversation",
+    "section": "Example Response",
+    "text": "Example Response\nAbridged response:\n{\n  \"choices\": [{\n    \"message\": {\n      \"role\": \"assistant\",\n      \"content\": \"The moon does not have a capital. It is not inhabited or governed.\",\n    },\n    \"finish_reason\": \"stop\"\n  }],\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"completion_tokens\": 12,\n    \"total_tokens\": 21,\n    \"completion_tokens_details\": {\n      \"reasoning_tokens\": 0\n    }\n  }\n}\n\nAssistant: Response from model\nWhy did the model stop responding\nTokens: “words” used in the input and output"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#example-followup-request",
+    "href": "slides/03-llm/02-anatomy.html#example-followup-request",
+    "title": "Anatomy of a Conversation",
+    "section": "Example Followup Request",
+    "text": "Example Followup Request\ncurl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"gpt-4.1\",\n    \"messages\": [\n      {\"role\": \"system\", \"content\": \"You are a terse assistant.\"},\n      {\"role\": \"user\", \"content\": \"What is the capital of the moon?\"},\n      {\"role\": \"assistant\", \"content\": \"The moon does not have a capital. It is not inhabited or governed.\"},\n      {\"role\": \"user\", \"content\": \"Are you sure?\"}\n    ]\n}'\n\nThe entire history is re-passed into the request"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#example-followup-response",
+    "href": "slides/03-llm/02-anatomy.html#example-followup-response",
+    "title": "Anatomy of a Conversation",
+    "section": "Example Followup Response",
+    "text": "Example Followup Response\nAbridged Response:\n{\n  \"choices\": [{\n    \"message\": {\n      \"role\": \"assistant\",\n      \"content\": \"Yes, I am sure. The moon has no capital or formal governance.\"\n    },\n    \"finish_reason\": \"stop\"\n  }],\n  \"usage\": {\n    \"prompt_tokens\": 52,\n    \"completion_tokens\": 15,\n    \"total_tokens\": 67,\n    \"completion_tokens_details\": {\n      \"reasoning_tokens\": 0\n    }\n  }\n}\n\nPrevious usage:\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"completion_tokens\": 12,\n    \"total_tokens\": 21,"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#tokens",
+    "href": "slides/03-llm/02-anatomy.html#tokens",
+    "title": "Anatomy of a Conversation",
+    "section": "Tokens",
+    "text": "Tokens\n\nFundamental units of information for LLMs\nWords, parts of words, or individual characters\nImportant for:\n\nModel input/output limits\nAPI pricing is usually by token\n\nhttps://gptforwork.com/tools/openai-chatgpt-api-pricing-calculator\n\n\n\nTry it yourself:\n\nhttps://tiktokenizer.vercel.app/\nhttps://platform.openai.com/tokenizer"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#token-example",
+    "href": "slides/03-llm/02-anatomy.html#token-example",
+    "title": "Anatomy of a Conversation",
+    "section": "Token example",
+    "text": "Token example\nCommon words represented with a single number:\n\nWhat is the capital of the moon?\n4827, 382, 290, 9029, 328, 290, 28479, 30\n8 tokens total (including punctuation)\n\n\nOther words may require multiple numbers\n\ncounterrevolutionary\ncounter, re, volution, ary\n32128, 264, 9477, 815\n4 tokens total"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#token-pricing-anthropic",
+    "href": "slides/03-llm/02-anatomy.html#token-pricing-anthropic",
+    "title": "Anatomy of a Conversation",
+    "section": "Token pricing (Anthropic)",
+    "text": "Token pricing (Anthropic)\nhttps://www.anthropic.com/pricing -&gt; API tab\n\n\n\n\nClaude Sonnet 4\n\nInput: $3 / million tokens\nOutput: $15 / million tokens\nContext window: 200k"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#context-window",
+    "href": "slides/03-llm/02-anatomy.html#context-window",
+    "title": "Anatomy of a Conversation",
+    "section": "Context window",
+    "text": "Context window\n\nDetermines how much input can be incorporated into each output\nHow much of the current history the agent has in the response\n\nFor Claude Sonnet:\n\n200k token context window\n150,000 words / 300 - 600 pages / 1.5 - 2 novels\n“Gödel, Escher, Bach” ~ 67,755 words"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#context-window---chat-history",
+    "href": "slides/03-llm/02-anatomy.html#context-window---chat-history",
+    "title": "Anatomy of a Conversation",
+    "section": "Context window - chat history",
+    "text": "Context window - chat history\n200k tokens seems like a lot of context…\n\n… but the entire chat is passed along each chat iteration\n{\"role\": \"system\", \"content\": \"You are a terse assistant.\"},\n{\"role\": \"user\", \"content\": \"What is the capital of the moon?\"},\n{\"role\": \"assistant\", \"content\": \"The moon does not have a capital. It is not inhabited or governed.\"},\n{\"role\": \"user\", \"content\": \"Are you sure?\"},\n{\"role\": \"assistant\", \"content\": \"Yes, I am sure. The moon has no capital or formal governance.\"}"
+  },
+  {
+    "objectID": "slides/03-llm/02-anatomy.html#summary",
+    "href": "slides/03-llm/02-anatomy.html#summary",
+    "title": "Anatomy of a Conversation",
+    "section": "Summary",
+    "text": "Summary\n\nA message is an object with:\n\nrole (e.g., “system”, “user”, “assistant”)\ncontent string\n\nA chat conversation is a growing list of messages\nThe OpenAI chat API is a stateless HTTP endpoint: takes a list of messages as input, returns a new message as output"
+  },
+  {
+    "objectID": "slides/03-llm/04-chatbot.html#shiny-rpython",
+    "href": "slides/03-llm/04-chatbot.html#shiny-rpython",
+    "title": "Chatbot User Interfaces (Shiny)",
+    "section": "Shiny (R/Python)",
+    "text": "Shiny (R/Python)\n\nR: https://posit-dev.github.io/shinychat/r/\nPython: https://posit-dev.github.io/shinychat/py/"
+  },
+  {
+    "objectID": "slides/03-llm/04-chatbot.html#demo-shinychat-python",
+    "href": "slides/03-llm/04-chatbot.html#demo-shinychat-python",
+    "title": "Chatbot User Interfaces (Shiny)",
+    "section": "Demo: shinychat Python",
+    "text": "Demo: shinychat Python\nfrom shiny.express import render, ui\nfrom shinychat.express import Chat\n\n# Set some Shiny page options\nui.page_opts(title=\"Hello Chat\")\n\n# Create a chat instance, with an initial message\nchat = Chat(\n    id=\"chat\",\n    messages=[\n        {\"content\": \"Hello! How can I help you today?\", \"role\": \"assistant\"},\n    ],\n)\n\n# Display the chat\nchat.ui()\n\n# Define a callback to run when the user submits a message\n@chat.on_user_submit\nasync def handle_user_input(user_input: str):\n    await chat.append_message(f\"You said: {user_input}\")\n\n\"Message state:\"\n\n@render.code\ndef message_state():\n    return str(chat.messages())"
+  },
+  {
+    "objectID": "slides/03-llm/04-chatbot.html#chatting-with-your-data",
+    "href": "slides/03-llm/04-chatbot.html#chatting-with-your-data",
+    "title": "Chatbot User Interfaces (Shiny)",
+    "section": "Chatting with your data",
+    "text": "Chatting with your data\n\nInteract with your data(frame) with SQL\nhttps://github.com/posit-dev/querychat"
+  },
+  {
+    "objectID": "slides/03-llm/04-chatbot.html#demo-querychat-python",
+    "href": "slides/03-llm/04-chatbot.html#demo-querychat-python",
+    "title": "Chatbot User Interfaces (Shiny)",
+    "section": "Demo: querychat Python",
+    "text": "Demo: querychat Python\nimport querychat\nfrom chatlas import ChatAnthropic\nfrom seaborn import load_dataset\nfrom shiny.express import render\n\n# data -----\ntitanic = load_dataset(\"titanic\")\n\n# chatbot setup -----\ndef create_chat_callback(system_prompt):\n    return ChatAnthropic(system_prompt=system_prompt)\n\n\nquerychat_config = querychat.init(\n    titanic,\n    \"titanic\",\n    greeting=\"\"\"Hello! I'm here to help you explore the Titanic dataset.\"\"\",\n    create_chat_callback=create_chat_callback,\n)\n\nchat = querychat.server(\"chat\", querychat_config)\n\n# shiny application -----\n\n# querychat UI\nquerychat.sidebar(\"chat\")\n\n# querychat filtered dataframe\n@render.data_frame\ndef data_table():\n    return chat[\"df\"]()"
+  },
+  {
+    "objectID": "slides/03-llm/04-chatbot.html#your-turn-change-querrychat-llm",
+    "href": "slides/03-llm/04-chatbot.html#your-turn-change-querrychat-llm",
+    "title": "Chatbot User Interfaces (Shiny)",
+    "section": "Your turn: Change querrychat LLM",
+    "text": "Your turn: Change querrychat LLM\n\nModify one of the querychat examples and swap it with another model\nTry using one of the local Ollama models and compare with your neighbor\n\n\n  \n    −\n    +\n \n 10:00"
+  },
+  {
+    "objectID": "slides/03-llm/04-chatbot.html#sidebot-demo",
+    "href": "slides/03-llm/04-chatbot.html#sidebot-demo",
+    "title": "Chatbot User Interfaces (Shiny)",
+    "section": "Sidebot demo",
+    "text": "Sidebot demo\n\nDemo: https://shiny.posit.co/py/templates/sidebot/\nuse natural language to drill down into a dataset\n\nPython template example code:\nshiny create --mode core --github jcheng5/py-databot"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#shiny-modules",
+    "href": "slides/04-modles_test_qa/01-modules.html#shiny-modules",
+    "title": "Shiny Modules",
+    "section": "Shiny modules",
+    "text": "Shiny modules\n\nShare a few tips, tricks, and “code smells” for using Shiny modules\nShiny modules:\n\nNamespaceing (isolation)\nReuse code (just like a normal function)\nDo not need to worry about duplicate IDs as you reuse modules\n\nSimilar to a normal function\n\nInputs and outputs (not to be confused with Shiny inputs and outputs)"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#motivation",
+    "href": "slides/04-modles_test_qa/01-modules.html#motivation",
+    "title": "Shiny Modules",
+    "section": "Motivation",
+    "text": "Motivation\n\n\n\n\n\n\n\n\nMastering Shiny: Shiny modules: https://mastering-shiny.org/scaling-modules.html\nEric Nantz | Effective use of Shiny modules in application development | RStudio (2019)"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#an-application",
+    "href": "slides/04-modles_test_qa/01-modules.html#an-application",
+    "title": "Shiny Modules",
+    "section": "An Application",
+    "text": "An Application\n#| '!! shinylive warning !!': |\n#|   shinylive does not work in self-contained HTML documents.\n#|   Please set `embed-resources: false` in your metadata.\n#| standalone: true\n#| viewerHeight: 550\n\n# app-01\n#\n# The base app if you were making everything one piece at a time\n#\n# problem: lots of manual UI and server code that is repeated\n\nfrom shiny import App, ui, reactive, render\nimport pandas as pd\nfrom palmerpenguins import load_penguins\n\npenguins = (\n    load_penguins()\n    .dropna()\n    .loc[:, [\"species\", \"bill_length_mm\", \"body_mass_g\"]]\n)\n\napp_ui = ui.page_sidebar(\n    ui.sidebar(\n        ui.input_checkbox_group(\n            id=\"filter_species\",\n            label=\"Select species\",\n            choices=sorted(penguins[\"species\"].unique()),\n            selected=sorted(penguins[\"species\"].unique()),\n        ),\n        ui.input_slider(\n            id=\"filter_bill_length_mm\",\n            label=\"Range for bill_length_mm\",\n            min=float(penguins[\"bill_length_mm\"].min()),\n            max=float(penguins[\"bill_length_mm\"].max()),\n            value=[\n                float(penguins[\"bill_length_mm\"].min()),\n                float(penguins[\"bill_length_mm\"].max()),\n            ],\n            step=1,\n        ),\n        ui.input_slider(\n            id=\"filter_body_mass_g\",\n            label=\"Range for body_mass_g\",\n            min=float(penguins[\"body_mass_g\"].min()),\n            max=float(penguins[\"body_mass_g\"].max()),\n            value=[\n                float(penguins[\"body_mass_g\"].min()),\n                float(penguins[\"body_mass_g\"].max()),\n            ],\n            step=1,\n        ),\n    ),\n    ui.card(\n        ui.card_header(\"Filtered Penguins Data\"),\n        ui.output_data_frame(\"filtered_data\"),\n    ),\n)\n\n\ndef server(input, output, session):\n    @reactive.calc\n    def get_filtered_data():\n        # Start with all rows\n        mask = pd.Series(True, index=penguins.index)\n\n        # Apply filters for each column\n        for col in penguins.columns:\n            if pd.api.types.is_numeric_dtype(penguins[col]):\n                min_val, max_val = input[f\"filter_{col}\"]()\n                mask = (\n                    mask\n                    & (penguins[col] &gt;= min_val)\n                    & (penguins[col] &lt;= max_val)\n                )\n            else:\n                selected_categories = input[f\"filter_{col}\"]()\n                mask = mask & penguins[col].isin(selected_categories)\n\n        # Return the filtered data\n        return penguins[mask]\n\n    @render.data_frame\n    def filtered_data():\n        return get_filtered_data()\n\n\n# Create and return the app\napp = App(app_ui, server)\n\n\nHere’s the application we’ll be talking though today. It’s a simple app with some filtering sliders on the left, and a dataframe display on the right.\nWe’ll cover how we go from a basic simple application and slowly improve it over a series of iterations into a module."
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#ui-code",
+    "href": "slides/04-modles_test_qa/01-modules.html#ui-code",
+    "title": "Shiny Modules",
+    "section": "UI code",
+    "text": "UI code\napp_ui = ui.page_sidebar(\n    ui.sidebar(\n        ui.input_checkbox_group(                              #&lt;&lt;\n            id=\"filter_species\",\n            label=\"Select species\",\n            choices=sorted(penguins[\"species\"].unique()),\n            selected=sorted(penguins[\"species\"].unique()),\n        ),\n        ui.input_slider(                                      #&lt;&lt;\n            id=\"filter_bill_length_mm\",\n            label=\"Range for bill_length_mm\",\n            min=float(penguins[\"bill_length_mm\"].min()),\n            max=float(penguins[\"bill_length_mm\"].max()),\n            value=[\n                float(penguins[\"bill_length_mm\"].min()),\n                float(penguins[\"bill_length_mm\"].max()),\n            ],\n            step=1,\n        ),\n        ui.input_slider(                                      #&lt;&lt;\n            id=\"filter_body_mass_g\",\n            label=\"Range for body_mass_g\",\n            min=float(penguins[\"body_mass_g\"].min()),\n            max=float(penguins[\"body_mass_g\"].max()),\n            value=[\n                float(penguins[\"body_mass_g\"].min()),\n                float(penguins[\"body_mass_g\"].max()),\n            ],\n            step=1,\n        ),\n    ),\n    ui.card(\n        ui.card_header(\"Filtered Penguins Data\"),\n        ui.output_data_frame(\"filtered_data\"),\n    ),\n)\n[shinylive-app01][shinylive-app01]"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#server-code",
+    "href": "slides/04-modles_test_qa/01-modules.html#server-code",
+    "title": "Shiny Modules",
+    "section": "Server code",
+    "text": "Server code\ndef server(input, output, session):\n    @reactive.calc                                                      #&lt;&lt; reactive calc\n    def get_filtered_data():\n        # Start with all rows                                           #&lt;&lt;\n        mask = pd.Series(True, index=penguins.index)                    #&lt;&lt; mask\n\n        # Apply filters for each column                                 #&lt;&lt; apply filters\n        for col in penguins.columns:                                    #&lt;&lt; for each column\n            if pd.api.types.is_numeric_dtype(penguins[col]):            #&lt;&lt; if numeric\n                min_val, max_val = input[f\"filter_{col}\"]()\n                mask = (\n                    mask\n                    & (penguins[col] &gt;= min_val)\n                    & (penguins[col] &lt;= max_val)\n                )\n            else:                                                       #&lt;&lt; else\n                selected_categories = input[f\"filter_{col}\"]()\n                mask = mask & penguins[col].isin(selected_categories)\n\n        # Return the filtered data                                      #&lt;&lt; return filtered data\n        return penguins[mask]                                           #&lt;&lt;\n\n    @render.data_frame                                                  #&lt;&lt; dataframe to display\n    def filtered_data():                                                #&lt;&lt;\n        return get_filtered_data()                                      #&lt;&lt;\n[shinylive-app01][shinylive-app01]"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#ui-code-1",
+    "href": "slides/04-modles_test_qa/01-modules.html#ui-code-1",
+    "title": "Shiny Modules",
+    "section": "UI code",
+    "text": "UI code\n# use a loop instead of listing individual components    #&lt;&lt;\nui_filters = {}                                          #&lt;&lt; dictionary to hold the filters by name\nfor col in penguins.columns:                             #&lt;&lt; loop through the columns specified\n    # numeric columns have a 2 way slider\n    if pd.api.types.is_numeric_dtype(penguins[col]):\n        ui_filters[col] = ui.input_slider(               #&lt;&lt; add the component to the dict\n            id=f\"filter_{col}\",\n            label=f\"Range for {col}\",\n            min=float(penguins[col].min()),\n            max=float(penguins[col].max()),\n            value=[\n                float(penguins[col].min()),\n                float(penguins[col].max()),\n            ],\n            step=1,\n        )\n    else:\n        # categorical columns get a checkbox\n        ui_filters[col] = ui.input_checkbox_group(       #&lt;&lt; add a different component\n            id=f\"filter_{col}\",\n            label=f\"Select {col}\",\n            choices=sorted(penguins[col].unique()),\n            selected=sorted(penguins[col].unique()),\n        )"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#ui-code-2",
+    "href": "slides/04-modles_test_qa/01-modules.html#ui-code-2",
+    "title": "Shiny Modules",
+    "section": "UI code",
+    "text": "UI code\nfor col in penguins.columns:\n    if pd.api.types.is_numeric_dtype(penguins[col]):\n        min_val = float(penguins[col].min())\n        max_val = float(penguins[col].max())\n        ui_filters[col] = {\n            \"filter_method\": \"sliders2_between\",                        #&lt;&lt; what kind of filter\n            \"component\": ui.input_slider(                               #&lt;&lt; actual component\n                id=f\"filter_{col}\",\n                label=f\"Range for {col}\",\n                min=min_val,\n                max=max_val,\n                value=[min_val, max_val],\n                step=1,\n            ),\n        }\n...\n\n    ui.sidebar(\n        *[(ui_filters[col][\"component\"]) for col in penguins.columns],  #&lt;&lt; all components in the UI\n    ),\n\nWe would then add another key that stores that information. We could use this sometime in the future to set a different input component."
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#code-changes",
+    "href": "slides/04-modles_test_qa/01-modules.html#code-changes",
+    "title": "Shiny Modules",
+    "section": "Code changes",
+    "text": "Code changes\nUI code\n    ui.sidebar(\n        ui.output_ui(\"df_filters\"),                                          #&lt;&lt; render UI ID\n    ),\nServer code\n    @render.ui                                                               #&lt;&lt;\n    def df_filters():                                                        #&lt;&lt; ID for render UI\n        return [(ui_filters[col][\"component\"]) for col in penguins.columns]"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#so-far",
+    "href": "slides/04-modles_test_qa/01-modules.html#so-far",
+    "title": "Shiny Modules",
+    "section": "So far…",
+    "text": "So far…\n\nUse a for loop to create the input components\nUse a for loop to read the input components\nUse a for loop to place the input components in the UI\nDefine a helper function that creates the input components\nDynamically render the ui with @render.ui\n\n\n\nFor each column: track the column name, label, column dtype, input component"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#code-smell-tracking-lists-of-component-values",
+    "href": "slides/04-modles_test_qa/01-modules.html#code-smell-tracking-lists-of-component-values",
+    "title": "Shiny Modules",
+    "section": "Code smell: Tracking List(s) of Component Values",
+    "text": "Code smell: Tracking List(s) of Component Values\n\nCalling the same component creating function multiple times.\nCreating a list of id values and iterating over and calling a function that makes a component.\nCreating at least 2 lists that track the id and some other input for the component.\n\nFor example a separate list for the id or label, but can also include things like a column name of a dataframe.\n\nIterating across lists(s) to ensure inputs are captured together\n\nEspecially if you find your self using the zip() function\n\n\nMore on the Shiny for Python Module documentation: https://shiny.posit.co/py/docs/modules.html"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#our-example",
+    "href": "slides/04-modles_test_qa/01-modules.html#our-example",
+    "title": "Shiny Modules",
+    "section": "Our Example",
+    "text": "Our Example\nfor col in penguins.columns:                          #&lt;&lt; column\n    if pd.api.types.is_numeric_dtype(penguins[col]):\n        ...\n        ui_filters[col] = {\n            \"filter_method\": ...,                     #&lt;&lt; method\n            \"component\": ...(                         #&lt;&lt; component"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#another-example",
+    "href": "slides/04-modles_test_qa/01-modules.html#another-example",
+    "title": "Shiny Modules",
+    "section": "Another Example",
+    "text": "Another Example\nAll 3 bits of information needed to be tracked together.\ncols = [\"size\", \"id\", \"total_bill\"]\ncol_types = [\"cat\", \"cat\", \"sliders\"]\nfilters = [\"filter_size\", \"filter_id\", \"filter_total_bill\"]\n\nfor fltr, col, col_type in zip(filters, cols, col_types):\n    ...\n\nI should only need to pass in 1 bit of information (column name)\nThe rest can be calculated\n\n\ncols: tied to the filters variable, and used to extract the corresponding column from the data.\ncol_type: determine how the data needed to be filtered. For example, selectize components always return values as a list of strings (List[str]), and needed to be converted to a numeric type to filter the data.\nfilters: get the user inputs from the ui."
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#code-smell-complex-and-interweaved-behaviors",
+    "href": "slides/04-modles_test_qa/01-modules.html#code-smell-complex-and-interweaved-behaviors",
+    "title": "Shiny Modules",
+    "section": "Code smell: Complex and Interweaved Behaviors",
+    "text": "Code smell: Complex and Interweaved Behaviors\n\nDynamically creating component ids\nComplex/complicated operations needing multiple other @reactive intermediate steps\nCoupling: changes in the codebase in many parts of the application in both the server() and ui"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#dynamically-creating-ids",
+    "href": "slides/04-modles_test_qa/01-modules.html#dynamically-creating-ids",
+    "title": "Shiny Modules",
+    "section": "Dynamically creating IDs",
+    "text": "Dynamically creating IDs\nfor col in penguins.columns:                          #&lt;&lt; looping through columns\n    if pd.api.types.is_numeric_dtype(penguins[col]):\n        ...\n        ui_filters[col] = {\n            \"filter_method\": \"sliders2_between\",\n            \"component\": ui.input_slider(\n                id=f\"filter_{col}\",                   #&lt;&lt; id based on colname\n                ...\n            ),\n        }"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#complex-operations",
+    "href": "slides/04-modles_test_qa/01-modules.html#complex-operations",
+    "title": "Shiny Modules",
+    "section": "Complex operations",
+    "text": "Complex operations"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#coupling",
+    "href": "slides/04-modles_test_qa/01-modules.html#coupling",
+    "title": "Shiny Modules",
+    "section": "Coupling",
+    "text": "Coupling\n# UI snippet\nfor col in columns:\n    if pd.api.types.is_numeric_dtype(df[col]):    #&lt;&lt; need a data type check\n        min_val = float(df[col].min())\n        max_val = float(df[col].max())\n        ui_filters[col] = {\n            \"filter_method\": \"sliders2_between\",  #&lt;&lt; specify the slider type\n            \"component\": ui.input_slider(         #&lt;&lt; specify component\n                f\"filter_{col}\",                  #&lt;&lt; create component ID\n\n...\n\n# server snippet\nfor col in penguins.columns:\n    if ui_filters[col][\"filter_method\"] == \"sliders2_between\":  #&lt;&lt; make slider type check\n        min_val, max_val = input[f\"filter_{col}\"]()             #&lt;&lt;\n        mask = mask & penguins[col].between(min_val, max_val)   #&lt;&lt;\n    elif ui_filters[col][\"filter_method\"] == \"list_isin\":\n        ..."
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#shiny-modules-1",
+    "href": "slides/04-modles_test_qa/01-modules.html#shiny-modules-1",
+    "title": "Shiny Modules",
+    "section": "Shiny Modules",
+    "text": "Shiny Modules\n\nReactive calculations need to happen in a reactive context\nOtherwise similar to a Python “module”\n\nAlso:\n\nComponent’s IDs must be unique\n\nReusing functions that create IDs can be problematic\nHence, namespacing"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#normal-python-function",
+    "href": "slides/04-modles_test_qa/01-modules.html#normal-python-function",
+    "title": "Shiny Modules",
+    "section": "Normal Python function",
+    "text": "Normal Python function\ndef create_ui_filters(data, columns):                #&lt;&lt; filter creating as a function\n    ui_filters = {}\n\n    for col in columns:\n        if pd.api.types.is_numeric_dtype(data[col]):\n            min_val = float(data[col].min())\n            max_val = float(data[col].max())\n            ui_filters[col] = {\n                \"filter_method\": \"sliders2_between\",\n                \"component\": ui.input_slider(\n                    id=f\"filter_{col}\",              #&lt;&lt; IDs need to be namespaced if colnames repeat\n                    label=f\"Range for {col}\",\n                    min=min_val,\n                    max=max_val,\n                    value=[min_val, max_val],\n                    step=1,\n                ),\n            }\n\n        else:\n            ...\n\n    return ui_filters"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#shiny-module-ui-and-server",
+    "href": "slides/04-modles_test_qa/01-modules.html#shiny-module-ui-and-server",
+    "title": "Shiny Modules",
+    "section": "Shiny Module UI (and server)",
+    "text": "Shiny Module UI (and server)\n@module.ui                                                         #&lt;&lt; Module UI\ndef filter_ui():\n    return ui.output_ui(\"filters\")                                 #&lt;&lt; renderUI ID\n\n\n@module.server\ndef filter_server(input, output, session, data, columns):\n    ...\n\n    @render.ui\n    def filters():                                                 #&lt;&lt; module render UI - ID\n        return [(ui_filters[col][\"component\"]) for col in columns]\n\n    ..."
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#shiny-module-server",
+    "href": "slides/04-modles_test_qa/01-modules.html#shiny-module-server",
+    "title": "Shiny Modules",
+    "section": "Shiny Module server",
+    "text": "Shiny Module server\n@module.server\ndef filter_server(input, output, session, data, columns): #&lt;&lt; pass in other variables\n    ui_filters = create_ui_filters(data, columns)         #&lt;&lt; !! create the inputs inside the server\n\n    ...\n\n    @reactive.calc\n    def get_filter_mask():                                #&lt;&lt; same reactive\n        mask = pd.Series(True, index=data.index)\n\n        for col in columns:\n            if ui_filters[col][\"filter_method\"] == \"sliders2_between\":\n                min_val, max_val = input[f\"filter_{col}\"]()\n                mask = mask & data[col].between(min_val, max_val)\n            elif ui_filters[col][\"filter_method\"] == \"list_isin\":\n                selected_categories = input[f\"filter_{col}\"]()\n                mask = mask & data[col].isin(selected_categories)\n            ...\n\n        return mask                                      #&lt;&lt; reactive returns mask, instead of dataframe\n\n    return {                                             #&lt;&lt; module returns mask\n        \"mask\": get_filter_mask,                         #&lt;&lt; note it's the reactive w/out ()\n    }"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#application-root-using-the-module",
+    "href": "slides/04-modles_test_qa/01-modules.html#application-root-using-the-module",
+    "title": "Shiny Modules",
+    "section": "Application root: using the module",
+    "text": "Application root: using the module\napp_ui = ui.page_sidebar(\n    ui.sidebar(\n        filter_ui(\"module\"),                       #&lt;&lt; 4. use the ui from module, same namespace\n    ),\n    ui.card(\n        ui.card_header(\"Filtered Penguins Data\"),\n        ui.output_data_frame(\"filtered_data\"),\n    ),\n)\n\n\n# Define the server logic\ndef server(input, output, session):\n    filter_module = filter_server(                 #&lt;&lt; 1. call the module\n        \"module\",                                  #&lt;&lt; 2. provide namespace\n        data=penguins,                             #&lt;&lt; 3. pass in any module inputs\n        columns=penguins.columns,\n    )\n\n    module_filter_mask = filter_module[\"mask\"]     #&lt;&lt; 5. optional, explicitly extract module return\n\n    @render.data_frame\n    def filtered_data():\n        return penguins.loc[module_filter_mask()]  #&lt;&lt; 6. use value from module"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#python-modules-and-packages",
+    "href": "slides/04-modles_test_qa/01-modules.html#python-modules-and-packages",
+    "title": "Shiny Modules",
+    "section": "Python modules and packages",
+    "text": "Python modules and packages\nCreate separate python modules:\n\nhelper.py: Helper function, create_ui_filters\nmodule.py: Shiny module\n\nNow that you have separate modules, you can put them into a Python package!\n\npyOpenSci Python Package Guide (hatch): https://www.pyopensci.org/\nPython Packages (poetry): https://py-pkgs.org/\n\npip install module\nimport module"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#refactored-application",
+    "href": "slides/04-modles_test_qa/01-modules.html#refactored-application",
+    "title": "Shiny Modules",
+    "section": "Refactored Application",
+    "text": "Refactored Application\nfrom shiny import App, ui, render\nfrom palmerpenguins import load_penguins\n\nimport module\n\npenguins = (\n    load_penguins()\n    .dropna()\n    .loc[:, [\"species\", \"bill_length_mm\", \"body_mass_g\"]]\n)\n\napp_ui = ui.page_sidebar(\n    ui.sidebar(\n        module.filter_ui(\"module\"),                #&lt;&lt; module UI\n    ),\n    ui.card(\n        ui.card_header(\"Filtered Penguins Data\"),\n        ui.output_data_frame(\"filtered_data\"),\n    ),\n)\n\ndef server(input, output, session):\n    filter_module = module.filter_server(          #&lt;&lt; module server\n        \"module\",\n        data=penguins,\n        columns=penguins.columns,\n    )\n\n    module_filter_mask = filter_module[\"mask\"]     #&lt;&lt; module return mask\n\n    @render.data_frame\n    def filtered_data():\n        return penguins.loc[module_filter_mask()]  #&lt;&lt; use module mask\n\napp = App(app_ui, server)"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#main-reason-to-use-shiny-modules",
+    "href": "slides/04-modles_test_qa/01-modules.html#main-reason-to-use-shiny-modules",
+    "title": "Shiny Modules",
+    "section": "Main reason to use Shiny Modules",
+    "text": "Main reason to use Shiny Modules\n\nYou really create a shiny module so you can reuse it.\n\nThat’s the entire point of namespacing.\n\n\nSo, we can…\n\nCreate a UI where we have multiple datasets and each dataset has a filter + dataframe view card"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#example",
+    "href": "slides/04-modles_test_qa/01-modules.html#example",
+    "title": "Shiny Modules",
+    "section": "Example",
+    "text": "Example\n\n\n[shinylive-app08][shinylive-app08]"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#example-data",
+    "href": "slides/04-modles_test_qa/01-modules.html#example-data",
+    "title": "Shiny Modules",
+    "section": "Example Data",
+    "text": "Example Data\npenguins1 = (\n    load_penguins()\n    .dropna()\n    .loc[:, [\"species\", \"bill_length_mm\", \"body_mass_g\"]]\n)\n\npenguins2 = (\n    load_penguins()\n    .dropna()\n    .loc[:, [\"island\", \"sex\", \"year\", \"flipper_length_mm\"]]\n)"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#example-server",
+    "href": "slides/04-modles_test_qa/01-modules.html#example-server",
+    "title": "Shiny Modules",
+    "section": "Example Server",
+    "text": "Example Server\ndef server(input, output, session):\n    # penguins 1 data -----                          #&lt;&lt; rename to penguins1\n    filter_module1 = module.filter_server(\n        \"module1\",                                   #&lt;&lt; module1 ID\n        data=penguins1,\n        columns=penguins1.columns,\n    )\n    module_filter_mask1 = filter_module1[\"mask\"]\n\n    @render.data_frame\n    def filtered_data1():\n        return penguins1.loc[module_filter_mask1()]\n\n    # penguins 2 data -----                          #&lt;&lt; call same module with penguins2\n    filter_module2 = module.filter_server(\n        \"module2\",                                   #&lt;&lt; module2 ID\n        data=penguins2,\n        columns=penguins2.columns,\n    )\n    module_filter_mask2 = filter_module2[\"mask\"]\n\n    @render.data_frame\n    def filtered_data2():\n        return penguins2.loc[module_filter_mask2()]"
+  },
+  {
+    "objectID": "slides/04-modles_test_qa/01-modules.html#example-ui",
+    "href": "slides/04-modles_test_qa/01-modules.html#example-ui",
+    "title": "Shiny Modules",
+    "section": "Example UI",
+    "text": "Example UI\napp_ui = ui.page_fillable(                                   #&lt;&lt; fillable\n    ui.navset_card_tab(                                      #&lt;&lt; card tab layout\n        ui.nav_panel(\n            \"Penguins 1\",\n            ui.card(\n                ui.layout_sidebar(\n                    ui.sidebar(\n                        module.filter_ui(\"module1\"),         #&lt;&lt; module1 UI\n                    ),\n                    ui.output_data_frame(\"filtered_data1\"),  #&lt;&lt; module 1 masked data\n                ),\n            ),\n        ),\n        ui.nav_panel(\n            \"Penguins 2\",\n            ui.card(\n                ui.layout_sidebar(\n                    ui.sidebar(\n                        module.filter_ui(\"module2\"),         #&lt;&lt;\n                    ),\n                    ui.output_data_frame(\"filtered_data2\"),  #&lt;&lt;\n                ),\n            ),\n        ),\n    ),\n)"
   }
 ]
