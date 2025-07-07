@@ -165,7 +165,7 @@
     "href": "slides/02-app/01-reactivity.html#previous-pydata-shiny-talks",
     "title": "What is Reactivity?",
     "section": "Previous PyData Shiny Talks",
-    "text": "Previous PyData Shiny Talks\n\nGordon Shotwell & Tracy Teal - Build Simple and Scalable Apps with Shiny | PyData NYC 2023\n\nSlides: https://github.com/gshotwell/shiny-algorithm\n\nJoe Cheng - Shiny: Data-centric web applications in Python | PyData Seattle 2023\n\nDemos: https://github.com/jcheng5/PyDataSeattle2023-demos"
+    "text": "Previous PyData Shiny Talks\n\n\nGordon Shotwell & Tracy Teal - Build Simple and Scalable Apps with Shiny | PyData NYC 2023\n\nSlides: https://github.com/gshotwell/shiny-algorithm\n\nJoe Cheng - Shiny: Data-centric web applications in Python | PyData Seattle 2023\n\nDemos: https://github.com/jcheng5/PyDataSeattle2023-demos"
   },
   {
     "objectID": "slides/02-app/01-reactivity.html#what-makes-shiny-special",
