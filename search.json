@@ -165,7 +165,7 @@
     "href": "index.html#schedule",
     "title": "SciPy 2025: Shiny for Python",
     "section": "Schedule",
-    "text": "Schedule\n\n\n\n\nTime\nActivity\n\n\n\n\n13:30\nWelcome!\n\n\n13:–\nBasic building blocks of a Shiny application\n\n\n13:–\nInput components\n\n\n13:–\nOutput components\n\n\n14:20\nbreak\n\n\n14:30\nA more complex application\n\n\n14:–\nShiny’s reactivity programming model\n\n\n15:–\nDeploying your application to the web (for free!)\n\n\n15:20\nbreak\n\n\n15:–\nAnatomy of a conversation\n\n\n15:–\nDemo: 20 Questions\n\n\n15:–\nYour first chat with an LLM\n\n\n15:–\nAI Chat Interfaces\n\n\n15:–\nTool Calling\n\n\n16:20\nbreak\n\n\n16:30\nShiny modules\n\n\n16:–\nTesting your shiny apps with playwright\n\n\n17:00\nQ+A with the Shiny engineers\n\n\n17:30\nEnd"
+    "text": "Schedule\n\n\n\n\nTime\nActivity\n\n\n\n\n13:30\nWelcome!\n\n\n13:40\nIntroduction to Shiny\n\n\n13:50\nYour first application\n\n\n14:20\nbreak\n\n\n14:30\nA more complex application\n\n\n14:–\nShiny’s reactivity programming model\n\n\n15:–\nDeploying your application to the web (for free!)\n\n\n15:20\nbreak\n\n\n15:–\nAnatomy of a conversation\n\n\n15:–\nDemo: 20 Questions\n\n\n15:–\nYour first chat with an LLM\n\n\n15:–\nAI Chat Interfaces\n\n\n15:–\nTool Calling\n\n\n16:20\nbreak\n\n\n16:30\nShiny modules\n\n\n16:–\nTesting your shiny apps with playwright\n\n\n17:00\nQ+A with the Shiny engineers\n\n\n17:30\nEnd"
   },
   {
     "objectID": "index.html#faq",
