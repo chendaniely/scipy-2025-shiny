@@ -1,0 +1,21 @@
+---
+title: Publish your application
+---
+
+## Step 1: Get your application on GitHub
+
+{{< countdown "5:00">}}
+
+- Take your application and put it up on a github repository.
+
+## Step 2: Publish on Connect Cloud
+
+Make an account on Posit Connect Cloud: <https://connect.posit.cloud/>
+
+1. Log In to Connect Cloud. First time will prompt you to connect to GitHub.
+2. Click the Publish button in the upper right of the screen.
+3. Select the framework you want to deploy (Shiny).
+4. Select your Repository.
+5. Confirm the Branch (main).
+6. Select your Primary file (app.py)
+7. Python deployments require a `requirements.txt`.

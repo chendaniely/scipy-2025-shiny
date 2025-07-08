@@ -1,0 +1,9 @@
+---
+title: "Publish"
+---
+
+:::{.column-page-inset-right}
+
+{{< revealjs file="slides/02-app/03-publish.html" height="500px" class="ratio ratio-16x9" >}}
+
+:::
