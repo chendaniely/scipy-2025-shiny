@@ -17,13 +17,25 @@ format:
 1. Title: "Restaurant tipping"
     - You can use the [`ui.page_opts()`](https://shiny.posit.co/py/api/express/express.ui.page_opts.html)
         and pass in a `title=''` parameter
+
+. . .
+
 2. Sidebar for a few input components (we'll add those later)
     - You can put some text here as a place holder, e.g., `"sidebar inputs"`
+
+. . .
+
 3. A full width column with 3 value boxes
     - Each value box will take up the same width of space
     - The value boxes will have separate labels and corresponding summary statistic
+
+. . .
+
 4. A full width column with 2 cards, one for a dataframe and another for a scatter plot
     - Each card will share the same width of space
+
+. . .
+
 5. A full width column with 1 card
 
 ## Your turn: App UI components
@@ -39,6 +51,8 @@ Here are the documentation pages for functions that may be useful for this exerc
 - `ui.card_header()`: <https://shiny.posit.co/py/api/express/express.ui.card_header.html>
 
 ## App UI
+
+{{< countdown "5:00">}}
 
 ```{shinylive-python}
 #| standalone: true
@@ -274,7 +288,7 @@ with ui.sidebar(open="desktop"):
 with ui.layout_columns(fill=False):
     with ui.value_box():
         "Total tippers"
-        @render.express
+        @render.text
         def total_tippers():
             idx1 = tips.total_bill.between(
                 left=input.slider()[0],
@@ -284,11 +298,12 @@ with ui.layout_columns(fill=False):
             idx2 = tips.time.isin(input.checkbox_group())
             tips_filtered = tips[idx1 & idx2]
 
-            tips_filtered.shape[0]
+            return tips_filtered.shape[0]
+
 
     with ui.value_box():
         "Average tip"
-        @render.express
+        @render.text
         def average_tip():
             idx1 = tips.total_bill.between(
                 left=input.slider()[0],
@@ -299,11 +314,11 @@ with ui.layout_columns(fill=False):
             tips_filtered = tips[idx1 & idx2]
 
             perc = tips_filtered.tip / tips_filtered.total_bill
-            f"{perc.mean():.1%}"
+            return f"{perc.mean():.1%}"
 
     with ui.value_box():
         "Average bill"
-        @render.express
+        @render.text
         def average_bill():
             idx1 = tips.total_bill.between(
                 left=input.slider()[0],
@@ -314,7 +329,7 @@ with ui.layout_columns(fill=False):
             tips_filtered = tips[idx1 & idx2]
 
             bill = tips_filtered.total_bill.mean()
-            f"${bill:.2f}"
+            return f"${bill:.2f}"
 ```
 
 ## Repeated reactive calculations
@@ -450,7 +465,7 @@ with ui.sidebar(open="desktop"):
 with ui.layout_columns(fill=False):
     with ui.value_box():
         "Total tippers"
-        @render.express
+        @render.text
         def total_tippers():
             idx1 = tips.total_bill.between(
                 left=input.slider()[0],
@@ -463,4 +478,21 @@ with ui.layout_columns(fill=False):
             tips_filtered.shape[0]
 ```
 
-## Finish the application
+## The application
+
+{{< countdown "5:00">}}
+
+```{shinylive-python}
+#| standalone: true
+#| #| components: [editor, viewer]
+#| layout: horizontal
+#| viewerHeight: 500
+
+{{< include /../code/02-dashboard/app.py >}}
+```
+
+## Challenge: Button
+
+- Reactive events
+
+<https://shiny.posit.co/py/api/express/express.ui.input_action_button.html>
