@@ -244,16 +244,15 @@
 <span id="cb2-5"><a></a></span>
 <span id="cb2-6"><a></a>app <span class="op">=</span> create_app_fixture(<span class="st">"app.py"</span>)</span>
 <span id="cb2-7"><a></a></span>
-<span id="cb2-8"><a></a><span class="co"># </span><span class="al">TODO</span><span class="co">: make new example with app</span></span>
-<span id="cb2-9"><a></a><span class="kw">def</span> test_basic_app(page: Page, app: ShinyAppProc):</span>
-<span id="cb2-10"><a></a>    page.goto(app.url)</span>
-<span id="cb2-11"><a></a></span>
-<span id="cb2-12"><a></a>    selectize_day <span class="op">=</span> controller.InputSelectize(page, <span class="st">"adaptive-filter_day"</span>)</span>
-<span id="cb2-13"><a></a>    selectize_day.<span class="bu">set</span>(<span class="st">"Fri"</span>)</span>
-<span id="cb2-14"><a></a>    selectize_day.expect_selected([<span class="st">"Fri"</span>])</span>
-<span id="cb2-15"><a></a></span>
-<span id="cb2-16"><a></a>    selectize_time <span class="op">=</span> controller.InputSelectize(page, <span class="st">"adaptive-filter_time"</span>)</span>
-<span id="cb2-17"><a></a>    selectize_time.expect_choices([<span class="st">"Dinner"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a></a><span class="kw">def</span> test_basic_app(page: Page, app: ShinyAppProc):</span>
+<span id="cb2-9"><a></a>    page.goto(app.url)</span>
+<span id="cb2-10"><a></a></span>
+<span id="cb2-11"><a></a>    selectize_day <span class="op">=</span> controller.InputSelectize(page, <span class="st">"adaptive-filter_day"</span>)</span>
+<span id="cb2-12"><a></a>    selectize_day.<span class="bu">set</span>(<span class="st">"Fri"</span>)</span>
+<span id="cb2-13"><a></a>    selectize_day.expect_selected([<span class="st">"Fri"</span>])</span>
+<span id="cb2-14"><a></a></span>
+<span id="cb2-15"><a></a>    selectize_time <span class="op">=</span> controller.InputSelectize(page, <span class="st">"adaptive-filter_time"</span>)</span>
+<span id="cb2-16"><a></a>    selectize_time.expect_choices([<span class="st">"Dinner"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

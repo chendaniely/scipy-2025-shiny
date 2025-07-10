@@ -25,7 +25,7 @@
     "href": "slides/04-modles_test_qa/02-testing.html#playwright-example",
     "title": "Testing",
     "section": "Playwright Example",
-    "text": "Playwright Example\nfrom shiny.playwright import controller\nfrom shiny.run import ShinyAppProc\nfrom playwright.sync_api import Page\nfrom shiny.pytest import create_app_fixture\n\napp = create_app_fixture(\"app.py\")\n\n# TODO: make new example with app\ndef test_basic_app(page: Page, app: ShinyAppProc):\n    page.goto(app.url)\n\n    selectize_day = controller.InputSelectize(page, \"adaptive-filter_day\")\n    selectize_day.set(\"Fri\")\n    selectize_day.expect_selected([\"Fri\"])\n\n    selectize_time = controller.InputSelectize(page, \"adaptive-filter_time\")\n    selectize_time.expect_choices([\"Dinner\"])"
+    "text": "Playwright Example\nfrom shiny.playwright import controller\nfrom shiny.run import ShinyAppProc\nfrom playwright.sync_api import Page\nfrom shiny.pytest import create_app_fixture\n\napp = create_app_fixture(\"app.py\")\n\ndef test_basic_app(page: Page, app: ShinyAppProc):\n    page.goto(app.url)\n\n    selectize_day = controller.InputSelectize(page, \"adaptive-filter_day\")\n    selectize_day.set(\"Fri\")\n    selectize_day.expect_selected([\"Fri\"])\n\n    selectize_time = controller.InputSelectize(page, \"adaptive-filter_time\")\n    selectize_time.expect_choices([\"Dinner\"])"
   },
   {
     "objectID": "slides/03-llm/05-tools.html#what-is-tool-calling",
@@ -47,13 +47,6 @@
     "title": "Tool Calling",
     "section": "How it DOES work",
     "text": "How it DOES work"
-  },
-  {
-    "objectID": "slides/03-llm/05-tools.html#demo-weather-r",
-    "href": "slides/03-llm/05-tools.html#demo-weather-r",
-    "title": "Tool Calling",
-    "section": "Demo: Weather R",
-    "text": "Demo: Weather R\nlibrary(httr)\nlibrary(ellmer)\nlibrary(dotenv)\n\n# Load environment variables\nload_dot_env()\n\n# Define weather function\nget_weather &lt;- function(latitude, longitude) {\n  base_url &lt;- \"https://api.open-meteo.com/v1/forecast\"\n\n  tryCatch(\n    {\n      response &lt;- GET(\n        base_url,\n        query = list(\n          latitude = latitude,\n          longitude = longitude,\n          current = \"temperature_2m,wind_speed_10m,relative_humidity_2m\"\n        )\n      )\n      rawToChar(response$content)\n    },\n    error = function(e) {\n      paste(\"Error fetching weather data:\", e$message)\n    }\n  )\n}\n\n# Create chat instance\nchat &lt;- chat_openai(\n  model = \"gpt-4.1\",\n  system_prompt = \"You are a helpful assistant that can check the weather. Report results in imperial units.\"\n)\n\n# Register the weather tool\n#\n# Created using `ellmer::create_tool_def(get_weather)`\nchat$register_tool(tool(\n  get_weather,\n  \"Fetches weather information for a specified location given by latitude and\nlongitude.\",\n  latitude = type_number(\n    \"The latitude of the location for which weather information is requested.\"\n  ),\n  longitude = type_number(\n    \"The longitude of the location for which weather information is requested.\"\n  )\n))\n\n# Test the chat\nchat$chat(\"What is the weather in Seattle?\")"
   },
   {
     "objectID": "slides/03-llm/05-tools.html#demo-weather-python",
@@ -548,7 +541,12 @@
     "href": "02-03-publish.html",
     "title": "Publish",
     "section": "",
-    "text": "View slides in full screen"
+    "text": "View slides in full screen",
+    "crumbs": [
+      "Setup",
+      "Building a Shiny Application",
+      "Publish"
+    ]
   },
   {
     "objectID": "03-02-anatomy.html",
