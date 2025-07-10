@@ -935,18 +935,11 @@
     "text": "Get Filter reactive calc\n\n\n\n\n\n\n\nflowchart TD\n  D[Dates] --&gt; Sa{{Sample}}\n  S[Sample Size] --&gt; Sa\n  A[Account] --&gt; F\n  Sa --&gt; F{{Filtered}}\n  F --&gt; P2((Model Scores))\n  F --&gt; P1((API Response))\n\n  classDef changed fill:#f96\n\n\n\n\n\n\n\n\nRectangle: Reactive input\nHexagon: Reactive expression\nCircle: Reactive output"
   },
   {
-    "objectID": "slides/02-app/03-publish.html",
-    "href": "slides/02-app/03-publish.html",
-    "title": "Publish your application",
-    "section": "",
-    "text": "−\n    +\n \n 05:00\n \n\nTake your application and put it up on a github repository."
-  },
-  {
     "objectID": "slides/02-app/03-publish.html#step-1-get-your-application-on-github",
     "href": "slides/02-app/03-publish.html#step-1-get-your-application-on-github",
     "title": "Publish your application",
-    "section": "",
-    "text": "−\n    +\n \n 05:00\n \n\nTake your application and put it up on a github repository."
+    "section": "Step 1: Get your application on GitHub",
+    "text": "Step 1: Get your application on GitHub\n\n  \n    −\n    +\n \n 05:00\n \n\nTake your application and put it up on a github repository."
   },
   {
     "objectID": "slides/02-app/03-publish.html#step-2-publish-on-connect-cloud",

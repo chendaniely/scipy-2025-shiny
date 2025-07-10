@@ -1,5 +1,11 @@
 ---
 title: Publish your application
+format:
+  revealjs:
+    footer: "SciPy 2025. <https://github.com/chendaniely/scipy-2025-shiny>"
+    slide-number: true
+    show-slide-number: all
+    smaller: true
 ---
 
 ## Step 1: Get your application on GitHub
