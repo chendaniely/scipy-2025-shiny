@@ -19,7 +19,7 @@ your own scalable production-ready python applications.
 | 14:20 | *break*                                                      |
 | 14:30 | [Shiny's reactivity programming model](02-01-reactivity.qmd) |
 | 14:45 | [A more complex application](02-02-dashboard.qmd)            |
-| 15:10 | [Deploying your application to the web (for free!)]()        |
+| 15:10 | [Deploying your application to the web (for free!)](02-03-publish.qmd)        |
 | 15:20 | *break*                                                      |
 | 15:30 | [Anatomy of a conversation](03-02-anatomy.qmd)               |
 | 15:45 | [Demo: 20 Questions][demo20q]                                |
