@@ -64,4 +64,4 @@ which will also be a precursor for you to learn more or incorporate Python Packa
 to your Shiny applications.
 
 
-[demo20q]: https://github.com/chendaniely/2025-06-05-llm/blob/main/demo/20-questions/app.R
+[demo20q]: https://github.com/chendaniely/2025-06-05-llm/blob/main/code/03-llm/01-basics/app-20_questions.R
