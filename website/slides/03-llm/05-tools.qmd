@@ -29,12 +29,6 @@ Reference: <https://jcheng5.github.io/llm-quickstart/quickstart.html#/how-it-wor
 
 ![](/img/toolcalling-yes.png)
 
-## Demo: Weather R
-
-```r
-{{< include /../code/03-llm/03-tools/ellmer-weather.R >}}
-```
-
 ## Demo: Weather Python
 
 ```python
