@@ -41,6 +41,7 @@ website:
           contents:
             - href: 02-01-reactivity.qmd
             - href: 02-02-dashboard.qmd
+            - href: 02-03-publish.qmd
         - section: "Working with LLMs"
           contents:
             - href: 03-01-welcome.qmd
