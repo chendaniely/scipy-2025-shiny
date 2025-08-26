@@ -6,7 +6,7 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <meta name="shinylive:serviceworker_dir" content="../..">
 <script src="../../site_libs/quarto-contrib/shinylive-0.10.4/shinylive/load-shinylive-sw.js" type="module"></script>
 <script src="../../site_libs/quarto-contrib/shinylive-0.10.4/shinylive/run-python-blocks.js" type="module"></script>
@@ -14,7 +14,7 @@
 <link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
 <script src="../../site_libs/quarto-contrib/countdown-0.5.0/countdown.js"></script>
 <link href="../../site_libs/quarto-contrib/countdown-0.5.0/countdown.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.32">
+  <meta name="generator" content="quarto-1.7.33">
 
   <title>Intro to Shiny – Your first application</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -102,6 +102,15 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-4621e72ad54d97092b68d40fdab05394.css">
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-WDEQ8YYNN7"></script>
+
+  <script type="text/javascript">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-WDEQ8YYNN7', { 'anonymize_ip': true});
+  </script>
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -214,7 +223,7 @@
 </section>
 <section id="visualizing-penguin-data" class="slide level2">
 <h2>Visualizing penguin data</h2>
-<div id="daf3099b" class="cell" data-execution_count="1">
+<div id="f8635fd0" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
 <span id="cb1-2"><a></a><span class="im">from</span> plotnine <span class="im">import</span> aes, geom_histogram, ggplot, theme_minimal</span>
 <span id="cb1-3"><a></a></span>
@@ -243,7 +252,7 @@
 </div>
 </div></section><section id="change-the-species" class="slide level2">
 <h2>Change the species</h2>
-<div id="1df5b6d8" class="cell" data-execution_count="2">
+<div id="01ee162c" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
 <span id="cb2-2"><a></a><span class="im">from</span> plotnine <span class="im">import</span> aes, geom_histogram, ggplot, theme_minimal</span>
 <span id="cb2-3"><a></a></span>
@@ -275,14 +284,14 @@
 <ul>
 <li>Create the working baseline code:</li>
 </ul>
-<div id="timer_e1ac19aaaaaa5b097df6e625a8899164ee94255b" class="countdown" data-warn-when="0" data-update-every="1" data-play-sound="false" data-blink-colon="false" data-start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<div id="timer_1d9eb75967f1a58d13edffef41140affaf072eb8" class="countdown" data-warn-when="0" data-update-every="1" data-play-sound="false" data-blink-colon="false" data-start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
   <div class="countdown-controls">
     <button class="countdown-bump-down">−</button>
     <button class="countdown-bump-up">+</button>
  </div>
  <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
  </div>
-<div id="27a5ea38" class="cell" data-execution_count="3">
+<div id="11cc5225" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
 <span id="cb3-2"><a></a><span class="im">from</span> plotnine <span class="im">import</span> aes, geom_histogram, ggplot, theme_minimal</span>
 <span id="cb3-3"><a></a></span>
@@ -307,7 +316,7 @@
 <li><p>Input Components Gallery: <a href="https://shiny.posit.co/py/components/#inputs" class="uri">https://shiny.posit.co/py/components/#inputs</a></p></li>
 <li><p>What might be a good component to use?</p></li>
 </ul>
-<div id="timer_e1ac19aaaaaa5b097df6e625a8899164ee94255b" class="countdown" data-warn-when="0" data-update-every="1" data-play-sound="false" data-blink-colon="false" data-start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<div id="timer_1d9eb75967f1a58d13edffef41140affaf072eb8" class="countdown" data-warn-when="0" data-update-every="1" data-play-sound="false" data-blink-colon="false" data-start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
   <div class="countdown-controls">
     <button class="countdown-bump-down">−</button>
     <button class="countdown-bump-up">+</button>
@@ -359,7 +368,7 @@
 <span id="cb6-12"><a></a>    choices=["Adelie", "Gentoo", "Chinstrap"],</span>
 <span id="cb6-13"><a></a>    inline=True,</span>
 <span id="cb6-14"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="timer_e1ac19aaaaaa5b097df6e625a8899164ee94255b" class="countdown" data-warn-when="0" data-update-every="1" data-play-sound="false" data-blink-colon="false" data-start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<div id="timer_1d9eb75967f1a58d13edffef41140affaf072eb8" class="countdown" data-warn-when="0" data-update-every="1" data-play-sound="false" data-blink-colon="false" data-start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
   <div class="countdown-controls">
     <button class="countdown-bump-down">−</button>
     <button class="countdown-bump-up">+</button>
@@ -526,7 +535,7 @@
 <span id="cb11-25"><a></a>        + geom_histogram(sel, fill="#447099", binwidth=1)</span>
 <span id="cb11-26"><a></a>        + theme_minimal()</span>
 <span id="cb11-27"><a></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="timer_e1ac19aaaaaa5b097df6e625a8899164ee94255b" class="countdown" data-warn-when="0" data-update-every="1" data-play-sound="false" data-blink-colon="false" data-start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<div id="timer_1d9eb75967f1a58d13edffef41140affaf072eb8" class="countdown" data-warn-when="0" data-update-every="1" data-play-sound="false" data-blink-colon="false" data-start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
   <div class="countdown-controls">
     <button class="countdown-bump-down">−</button>
     <button class="countdown-bump-up">+</button>
