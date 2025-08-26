@@ -11,6 +11,7 @@ project:
 
 website:
   title: "Intro to Shiny"
+  google-analytics: "G-WDEQ8YYNN7"
   navbar:
     left:
       - href: setup.qmd
